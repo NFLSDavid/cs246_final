@@ -5,13 +5,20 @@ using namespace std;
 
 typedef pair<int, int> point;
 
+
 class Block: public abc_block {
     private:
     point p;
     bool checkValidMove();
-
+    void setFalse();        // set False and set type to space
+    void setTrue();
+    void moveLeft();
+    void moveRight();
+    void moveUp();
+    void moveDown();
+    
     public:
-    Block();
+    Block(Board *b, char type);
     virtual void clockwise() = 0;
     virtual void counterclockwise() = 0;
     void left();
@@ -23,4 +30,5 @@ class Block: public abc_block {
     
     protected:
     vector <point> p_array;
+    char type;
 };

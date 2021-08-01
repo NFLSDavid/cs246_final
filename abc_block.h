@@ -5,9 +5,13 @@ using namespace std;
 class Board;
 
 class abc_block {
+    protected:
+    bool valid;
+    
     public:
     Board *b;
 
+    abc_block(Board *b);
     virtual void clockwise() = 0;
     virtual void counterclockwise() = 0;
     virtual void left() = 0;

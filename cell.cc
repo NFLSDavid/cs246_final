@@ -11,6 +11,22 @@ int Cell::getY() {
     return y;
 }
 
+char Cell::getType() {
+    return type;
+}
+
+void Cell::setType(char t) {
+    type = t;
+}
+
+bool Cell::getState() {
+    return occupied;
+}
+
+void Cell::setState(bool s) {
+    occupied = s;
+}
+
 void Cell::turnOff() {
     occupied = false;
 }

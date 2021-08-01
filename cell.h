@@ -10,9 +10,13 @@ class Cell {
     Cell(int x, int y, char type);
     int getX();
     int getY();
-    void turnOff();
+    char getType();
+    void setType(char t);
 
+    void turnOff();
     void turnOn();
+    bool getState();
+    void setState(bool);
 
     void draw();
     void undraw();
