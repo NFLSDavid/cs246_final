@@ -27,5 +27,6 @@ void Cell::undraw() {
 }
 
 void Cell::print() {
-
+    std::cout << type;
+    // the newline character will be added in the actual loop in the Board class
 }
