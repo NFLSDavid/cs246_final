@@ -11,7 +11,8 @@ Block::Block(Board *b, char type): abc_block{b}, type{type} {
         for (int i = 0; i < len; ++i) {
             int x = p_array.at(i).first;
             int y = p_array.at(i).second;
-            this->b->cells.at(y).at(x)->setState(true);
+            this->b->cells.at(y).at(x).get()->setState(true);
+            // this->b->cells.at(y).at(x)->setState(true);
         }
     }
     p = make_pair(0, 3);
@@ -22,8 +23,8 @@ void Block::setFalse() {
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;
-        this->b->cells.at(y).at(x)->setState(false);
-        this->b->cells.at(y).at(x)->setType(' ');
+        this->b->cells.at(y).at(x).get()->setState(true);
+        this->b->cells.at(y).at(x).get()->setType(' ');
     }
 }
 
@@ -32,8 +33,8 @@ void Block::setTrue() {
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;
-        this->b->cells.at(y).at(x)->setState(true);
-        this->b->cells.at(y).at(x)->setType(type);
+        this->b->cells.at(y).at(x).get()->setState(true);
+        this->b->cells.at(y).at(x).get()->setType(type);
     }
 }
 
@@ -44,7 +45,7 @@ bool Block::checkValidMove() {
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;  
-        Cell *c = this->b->cells.at(y).at(x);
+        Cell *c = this->b->cells.at(y).at(x).get();
         if (x < 0 || y < 0 || 
             x > 10 || y > 17) {  // whether fall out of the board
             return false;

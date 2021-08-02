@@ -29,6 +29,7 @@ void Cell::setState(bool s) {
 
 void Cell::turnOff() {
     occupied = false;
+    type = ' ';
 }
 
 void Cell::turnOn() {

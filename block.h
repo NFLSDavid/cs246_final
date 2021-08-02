@@ -8,6 +8,7 @@ typedef pair<int, int> point;
 
 class Block: public abc_block {
     private:
+    int level;
     point p;
     bool checkValidMove();
     void setFalse();        // set False and set type to space
@@ -24,7 +25,7 @@ class Block: public abc_block {
     void left();
     void right();
     void down();
-    void up();
+    //void up();
     void drop();
     virtual ~Block() = 0;
     
