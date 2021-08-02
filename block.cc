@@ -111,7 +111,7 @@ void Block::right() {
     setTrue();
 }
 
-void Block::up() {
+/*void Block::up() {
     int len = p_array.size();
     setFalse();
     moveUp();
@@ -121,7 +121,7 @@ void Block::up() {
         valid = true;
     }
     setTrue();
-}
+}*/
 
 void Block::down() {
     int len = p_array.size();
