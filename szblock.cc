@@ -1,13 +1,21 @@
-#include "zblock.h"
+#include "szblock.h"
 using namespace std;
 
-zblock::zblock(Board *b, char type) : Block{b, type} {}
+szblock::szblock(Board *b, char type) : Block{b, type} {}
 
-bool zblock::initBlock() {
-    p_array.emplace_back(make_pair(0, 2));
-    p_array.emplace_back(make_pair(1, 2));
-    p_array.emplace_back(make_pair(1, 3));
-    p_array.emplace_back(make_pair(2, 3));
+bool szblock::initBlock() {
+    if (type == 'z') {
+        p_array.emplace_back(make_pair(0, 2));
+        p_array.emplace_back(make_pair(1, 2));
+        p_array.emplace_back(make_pair(1, 3));
+        p_array.emplace_back(make_pair(2, 3));
+    } else {
+        p_array.emplace_back(make_pair(1, 2));
+        p_array.emplace_back(make_pair(1, 3));
+        p_array.emplace_back(make_pair(0, 3));
+        p_array.emplace_back(make_pair(2, 2));
+    }
+    
 
     valid = checkValidMove();
     if (valid) {
@@ -18,8 +26,8 @@ bool zblock::initBlock() {
     return false;
 }
 
-bool zblock::judgeGraph() {
-    
+
+bool szblock::judgeGraph() {
     int len = p_array.size();
     int x0 = p.first;
     int y0 = p.second;
@@ -27,13 +35,14 @@ bool zblock::judgeGraph() {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;
         if (x0 == x && y0 == y) {
-            return false; // when it is vertical
+            return false; // when z vertical
         }
     }
     return true;
 }
 
-void zblock::moveClockwise() {
+
+void szblock::moveClockwise() {
     /*if (!judgeGraph()) { // vertical
         ++p_array.at(2).first;
         ++p_array.at(3).first;
@@ -45,10 +54,10 @@ void zblock::moveClockwise() {
     }*/
 
     // modified  
-    if (!judgeGraph()) { // vertical
+    if ((!judgeGraph() && type == 'z') || (judgeGraph() && type == 's')) { // z vertical/ s horizontal
         p_array.at(2).second += 2;
         p_array.at(3).first += 2;
-    } else { // horizontal
+    } else if ((!judgeGraph() && type == 's') || (judgeGraph() && type == 'z')){ // horizontal
         p_array.at(2).second -= 2;
         p_array.at(3).first -= 2;
     }
@@ -56,7 +65,7 @@ void zblock::moveClockwise() {
 }
 
 
-void zblock::clockwise() {
+void szblock::clockwise() {
     setFalse();
     moveClockwise();
     valid = checkValidMove();
@@ -67,6 +76,6 @@ void zblock::clockwise() {
     setTrue();
 }
 
-void zblock::counterclockwise() {
+void szblock::counterclockwise() {
     clockwise();
 }

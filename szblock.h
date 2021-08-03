@@ -1,12 +1,12 @@
-#ifndef _ZBLOCK_H_
-#define _ZBLOCK_H_
+#ifndef _SZBLOCK_H_
+#define _SZBLOCK_H_
 
 #include "block.h" 
 using namespace std;
 
-class zblock : public Block {
+class szblock : public Block {
     public:
-    zblock(Board *b, char type);
+    szblock(Board *b, char type);
     bool initBlock() override;
     void clockwise() override;
     void counterclockwise() override;
