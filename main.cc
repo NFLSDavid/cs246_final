@@ -12,9 +12,9 @@ int main() {
     b1->initAllCells();
     iblock b = iblock{b1.get(), 'I'};
     szblock z = szblock{b1.get(), 'Z'};
-    
+    szblock s = szblock{b1.get(), 'S'};
     //b.initBlock();
-    z.initBlock();
+    s.initBlock();
     b1->printBoard();
     string cmd;
     while (true) {
@@ -22,16 +22,16 @@ int main() {
         
         if (cmd == "right") {
             //b.setFalse();
-            z.right();
+            s.right();
             
         } else if (cmd == "left") {
-            z.left();
+            s.left();
         } else if (cmd == "down") {
-            z.down();
+            s.down();
         } else if (cmd == "counterclockwise") {
-            z.counterclockwise();
+            s.counterclockwise();
         } else if (cmd == "clockwise") {
-            z.clockwise();
+            s.clockwise();
         }
         b1->printBoard();
     } 

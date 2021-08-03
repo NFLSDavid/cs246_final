@@ -1,1 +1,1 @@
-main.o: main.cc board.h zblock.h block.h iblock.h oblock.h
+main.o: main.cc board.h szblock.h block.h iblock.h oblock.h

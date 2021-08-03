@@ -4,7 +4,7 @@ using namespace std;
 szblock::szblock(Board *b, char type) : Block{b, type} {}
 
 bool szblock::initBlock() {
-    if (type == 'z') {
+    if (type == 'Z') {
         p_array.emplace_back(make_pair(0, 2));
         p_array.emplace_back(make_pair(1, 2));
         p_array.emplace_back(make_pair(1, 3));
@@ -43,21 +43,12 @@ bool szblock::judgeGraph() {
 
 
 void szblock::moveClockwise() {
-    /*if (!judgeGraph()) { // vertical
-        ++p_array.at(2).first;
-        ++p_array.at(3).first;
-        p_array.at(3).second += 2;
-    } else { // horizontal
-        --p_array.at(2).first;
-        --p_array.at(3).first;
-        p_array.at(3).second -= 2;
-    }*/
 
     // modified  
-    if ((!judgeGraph() && type == 'z') || (judgeGraph() && type == 's')) { // z vertical/ s horizontal
+    if ((!judgeGraph() && type == 'Z') || (judgeGraph() && type == 'S')) { // z vertical/ s horizontal
         p_array.at(2).second += 2;
         p_array.at(3).first += 2;
-    } else if ((!judgeGraph() && type == 's') || (judgeGraph() && type == 'z')){ // horizontal
+    } else if ((!judgeGraph() && type == 'S') || (judgeGraph() && type == 'Z')){ // horizontal
         p_array.at(2).second -= 2;
         p_array.at(3).first -= 2;
     }

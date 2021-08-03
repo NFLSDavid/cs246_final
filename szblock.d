@@ -1,1 +1,1 @@
-zblock.o: zblock.cc zblock.h block.h
+szblock.o: szblock.cc szblock.h block.h
