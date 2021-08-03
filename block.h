@@ -3,6 +3,7 @@
 
 using namespace std;
 #include <utility>
+#include <memory>
 #include <vector>
 
 typedef pair<int, int> point;
@@ -23,7 +24,7 @@ class Block {
 
     // if we failed to init a new block, then we return false; and that could tell the game
     // to end; if true, then we successfully created a block
-    virtual bool initBlock() = 0; 
+    virtual bool initBlock(int x, int y) = 0; 
 
     virtual void clockwise() = 0;
     virtual void counterclockwise() = 0;
@@ -31,6 +32,9 @@ class Block {
     void right();
     void down();
     void drop();
+    void setFalse();        // set False and set type to space
+    void setTrue();
+    shared_ptr<point> getLeftCorner();
     virtual ~Block();
     
     protected:
@@ -38,8 +42,8 @@ class Block {
     char type;
     point p;
     bool valid;
-    void setFalse();        // set False and set type to space
-    void setTrue();
+    //void setFalse();        // set False and set type to space
+    //void setTrue();
     bool checkValidMove();
 };
 

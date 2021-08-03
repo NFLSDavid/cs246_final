@@ -145,3 +145,8 @@ void Block::down() {
     setTrue();
     p.second += 1;
 }
+
+shared_ptr<point> Block::getLeftCorner() {
+    auto s = make_shared<point>(p.first, p.second);
+    return s;
+}

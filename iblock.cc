@@ -3,14 +3,16 @@ using namespace std;
 
 iblock::iblock(Board *b, char type) : Block{b, type} {}
 
-bool iblock::initBlock() {
+bool iblock::initBlock(int x, int y) {
     for (int i = 0; i < 4; ++i) {
-        p_array.emplace_back(make_pair(i, 3));
+        p_array.emplace_back(make_pair(x, y));
+        x++;
     }
+    x -= 3;
     valid = checkValidMove();
     if (valid) {
         setTrue();
-        p = make_pair(0, 3);
+        p = make_pair(x, y);
         return true;
     }
     return false;

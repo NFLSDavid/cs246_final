@@ -7,7 +7,7 @@ using namespace std;
 class iblock : public Block {
     public:
     iblock(Board *b, char type);
-    bool initBlock() override;
+    bool initBlock(int x, int y) override;
     void clockwise() override;
     void counterclockwise() override;
 
