@@ -1,6 +1,6 @@
 #include "board.h"
 #include <string>
-#include "zblock.h"
+#include "szblock.h"
 #include "iblock.h"
 
 #include "oblock.h"
@@ -11,7 +11,7 @@ int main() {
     shared_ptr<Board> b1 = make_shared<Board>();
     b1->initAllCells();
     iblock b = iblock{b1.get(), 'I'};
-    zblock z = zblock{b1.get(), 'Z'};
+    szblock z = szblock{b1.get(), 'Z'};
     
     //b.initBlock();
     z.initBlock();
