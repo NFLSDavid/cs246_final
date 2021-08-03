@@ -1,6 +1,7 @@
-#include "abc_block.h"
+//#include "abc_block.h"
+#include "board.h"
 
-class Level: public abc_block {
+/*class Level: public abc_block {
     public:
     virtual void clockwise();
     virtual void counterclockwise();
@@ -15,4 +16,20 @@ class Level: public abc_block {
     protected:
     Level(abc_block *c);
     abc_block *component;
+};*/
+
+class Level: public Board {
+    public:
+        virtual void currClockwise();
+        virtual void currCounterclockwise();
+
+        virtual void currLeft();
+        virtual void currRight();
+        virtual void currDown();
+        void drop();
+        void clear();
+        virtual ~Level();
+    protected:
+        Level(Board *c);
+        Board *component;
 };

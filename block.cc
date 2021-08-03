@@ -4,8 +4,8 @@
 
 using namespace std;
 
-Block::Block(Board *b, char type): abc_block{b}, type{type} {
-    valid = checkValidMove();   // we check if valid after we constructed the block, if false, game OVER
+Block::Block(Board *b, char type): b{b}, type{type} {
+    /*valid = checkValidMove();   // we check if valid after we constructed the block, if false, game OVER
     if (valid) {
         int len = p_array.size();
         for (int i = 0; i < len; ++i) {
@@ -14,9 +14,11 @@ Block::Block(Board *b, char type): abc_block{b}, type{type} {
             this->b->cells.at(y).at(x).get()->setState(true);
             // this->b->cells.at(y).at(x)->setState(true);
         }
-    }
-    p = make_pair(0, 3);
+    }*/
+    //p = make_pair(0, 3); 
 }
+
+
 
 void Block::setFalse() {
     int len = p_array.size();
@@ -97,7 +99,11 @@ void Block::left() {
         valid = true;
     }
     setTrue();
+
+    // newly added
+    p.first -= 1;
 }
+
 
 void Block::right() {
     int len = p_array.size();
@@ -109,6 +115,7 @@ void Block::right() {
         valid = true;
     }
     setTrue();
+    p.first += 1;
 }
 
 /*void Block::up() {
@@ -132,4 +139,5 @@ void Block::down() {
         valid = true;
     } 
     setTrue();
+    p.second += 1;
 }
