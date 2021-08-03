@@ -1,5 +1,6 @@
 #include "board.h"
 #include "cell.h"
+#include <iostream>
 using namespace std;
 
 void Board::initAllCells() {
@@ -42,5 +43,16 @@ void Board::clear() {
             ++num;
             
         }
+    }
+}
+
+void Board::printBoard() {
+    int rows  = cells.size();
+    int cols = cells.at(0).size();
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << cells.at(i).at(j).get()->getType();
+        }
+        cout << endl;
     }
 }

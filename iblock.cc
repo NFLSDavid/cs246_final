@@ -1,11 +1,7 @@
 #include "iblock.h"
 using namespace std;
 
-iblock::iblock(Board *b, char type) : Block{b, type} {
-    for (int i = 0; i < 4; ++i) {
-        p_array.emplace_back(make_pair(i, 3));
-    }
-}
+iblock::iblock(Board *b, char type) : Block{b, type} {}
 
 bool iblock::initBlock() {
     for (int i = 0; i < 4; ++i) {
@@ -14,8 +10,10 @@ bool iblock::initBlock() {
     valid = checkValidMove();
     if (valid) {
         setTrue();
-        p = make_pair(0,3);
+        p = make_pair(0, 3);
+        return true;
     }
+    return false;
 }
 
 void iblock::moveClockwise() {
@@ -31,7 +29,7 @@ void iblock::moveClockwise() {
     } else {
         for (int i = 0; i < len; ++i) {
             p_array.at(i).first = x0;
-            p_array.at(i).second = y0 + i;
+            p_array.at(i).second = y0 - i;
         }
     }
 }

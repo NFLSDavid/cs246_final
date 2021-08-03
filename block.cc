@@ -1,8 +1,10 @@
 #include "block.h"
 #include "board.h"
 #include "cell.h"
-
+#include <iostream>
 using namespace std;
+
+Block::~Block() {}
 
 Block::Block(Board *b, char type): b{b}, type{type} {
     /*valid = checkValidMove();   // we check if valid after we constructed the block, if false, game OVER
@@ -25,7 +27,7 @@ void Block::setFalse() {
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;
-        this->b->cells.at(y).at(x).get()->setState(true);
+        this->b->cells.at(y).at(x).get()->setState(false);
         this->b->cells.at(y).at(x).get()->setType(' ');
     }
 }
@@ -47,11 +49,14 @@ bool Block::checkValidMove() {
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;  
-        Cell *c = this->b->cells.at(y).at(x).get();
+
         if (x < 0 || y < 0 || 
             x > 10 || y > 17) {  // whether fall out of the board
             return false;
-        } else if (c->getState() == true) {  // whether it collides with other already occupied cells
+        }
+
+        Cell *c = this->b->cells.at(y).at(x).get();
+        if (c->getState() == true) {  // whether it collides with other already occupied cells
             return false;
         }
     }
@@ -69,7 +74,7 @@ void Block::moveLeft() {
 void Block::moveRight() {
     int len = p_array.size();
     for (int i = 0; i < len; ++i) {
-        --p_array.at(i).first;
+        ++p_array.at(i).first;
     }
 }
 
@@ -80,7 +85,7 @@ void Block::moveUp() {
     }
 }
 
-void Block::moveLeft() {
+void Block::moveDown() {
     int len = p_array.size();
     for (int i = 0; i < len; ++i) {
         ++p_array.at(i).second;
@@ -90,7 +95,6 @@ void Block::moveLeft() {
 
 
 void Block::left() {
-    int len = p_array.size();
     setFalse();
     moveLeft();
     valid = checkValidMove();
@@ -106,10 +110,10 @@ void Block::left() {
 
 
 void Block::right() {
-    int len = p_array.size();
     setFalse();
     moveRight();
     valid = checkValidMove();
+    cout << valid << endl;
     if (valid == false) {
         moveLeft();
         valid = true;
@@ -118,7 +122,7 @@ void Block::right() {
     p.first += 1;
 }
 
-/*void Block::up() {
+/*void Block::drop() {
     int len = p_array.size();
     setFalse();
     moveUp();
@@ -131,7 +135,7 @@ void Block::right() {
 }*/
 
 void Block::down() {
-    int len = p_array.size();
+    setFalse();
     moveDown();
     valid = checkValidMove();
     if (valid == false) {

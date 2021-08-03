@@ -1,10 +1,8 @@
-#ifndef _I_BLOCK_
-#define _I_BLOCK_
+#ifndef _IBLOCK_H_
+#define _IBLOCK_H_
 
 #include "block.h"
 using namespace std;
-
-class Board;
 
 class iblock : public Block {
     public:
@@ -12,11 +10,9 @@ class iblock : public Block {
     bool initBlock() override;
     void clockwise() override;
     void counterclockwise() override;
-    ~iblock();
 
     private:
     void moveClockwise();
-    void moveCounterclockwise();
 };
 
 

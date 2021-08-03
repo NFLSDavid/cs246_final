@@ -1,4 +1,6 @@
-//#include "abc_block.h"
+#ifndef _BLOCK_H_
+#define _BLOCK_H_
+
 using namespace std;
 #include <utility>
 #include <vector>
@@ -7,9 +9,8 @@ typedef pair<int, int> point;
 
 class Board;
 
-class Block/*: public abc_block*/ {
+class Block {
     private:
-    
     Board *b;
     int level; 
     void moveLeft();
@@ -30,7 +31,7 @@ class Block/*: public abc_block*/ {
     void right();
     void down();
     void drop();
-    virtual ~Block() = 0;
+    virtual ~Block();
     
     protected:
     vector <point> p_array;
@@ -41,3 +42,5 @@ class Block/*: public abc_block*/ {
     void setTrue();
     bool checkValidMove();
 };
+
+#endif

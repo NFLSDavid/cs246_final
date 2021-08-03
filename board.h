@@ -3,12 +3,12 @@
 
 #include <vector>
 #include <memory>
-#include "block.h"
+//#include "block.h"
 
 using namespace std;
 
 class Cell;
-
+class Block;
 class Board {
     private:
     vector <shared_ptr<Block>> active_blocks;
@@ -25,6 +25,9 @@ class Board {
     void force();
     void blind();
     void heavy();
+
+    // for testing
+    void printBoard();
     ~Board();
 };
 

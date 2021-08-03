@@ -1,4 +1,4 @@
-#ifndef __ABC_BLOCK_H__
+/*#ifndef __ABC_BLOCK_H__
 #define __ABC_BLOCK_H__
 using namespace std;
 
@@ -23,4 +23,4 @@ class abc_block {
  };
 
 
-#endif
+#endif*/
