@@ -1,7 +1,8 @@
 #include "board.h"
 #include <string>
-#include "iblock.h"
 #include "zblock.h"
+#include "iblock.h"
+
 #include "oblock.h"
 #include <iostream>
 using namespace std;
@@ -13,7 +14,7 @@ int main() {
     zblock z = zblock{b1.get(), 'Z'};
     
     //b.initBlock();
-    b.initBlock();
+    z.initBlock();
     b1->printBoard();
     string cmd;
     while (true) {
@@ -21,16 +22,16 @@ int main() {
         
         if (cmd == "right") {
             //b.setFalse();
-            b.right();
+            z.right();
             
         } else if (cmd == "left") {
-            b.left();
+            z.left();
         } else if (cmd == "down") {
-            b.down();
+            z.down();
         } else if (cmd == "counterclockwise") {
-            b.counterclockwise();
+            z.counterclockwise();
         } else if (cmd == "clockwise") {
-            b.clockwise();
+            z.clockwise();
         }
         b1->printBoard();
     } 

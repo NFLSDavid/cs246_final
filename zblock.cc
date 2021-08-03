@@ -19,6 +19,7 @@ bool zblock::initBlock() {
 }
 
 bool zblock::judgeGraph() {
+    
     int len = p_array.size();
     int x0 = p.first;
     int y0 = p.second;
@@ -26,14 +27,14 @@ bool zblock::judgeGraph() {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;
         if (x0 == x && y0 == y) {
-            return false;
+            return false; // when it is vertical
         }
     }
     return true;
 }
 
 void zblock::moveClockwise() {
-    if (judgeGraph()) { // vertical
+    /*if (!judgeGraph()) { // vertical
         ++p_array.at(2).first;
         ++p_array.at(3).first;
         p_array.at(3).second += 2;
@@ -41,7 +42,17 @@ void zblock::moveClockwise() {
         --p_array.at(2).first;
         --p_array.at(3).first;
         p_array.at(3).second -= 2;
+    }*/
+
+    // modified  
+    if (!judgeGraph()) { // vertical
+        p_array.at(2).second += 2;
+        p_array.at(3).first += 2;
+    } else { // horizontal
+        p_array.at(2).second -= 2;
+        p_array.at(3).first -= 2;
     }
+    
 }
 
 

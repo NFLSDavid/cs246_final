@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -g -Wall -MMD -Werror=vla
-OBJECTS = board.o main.o block.o iblock.o cell.o
+OBJECTS = board.o main.o block.o iblock.o cell.o zblock.o oblock.o
 DEPENDS = ${OBJECTS:.o=.d}
 EXEC = biquadris
 

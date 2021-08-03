@@ -13,7 +13,9 @@ bool oblock::initBlock() {
     if (valid) {
         setTrue();
         p = make_pair(0, 3);
+        return true;
     }
+    return false;
 }
 
 void oblock::clockwise() {}

@@ -4,7 +4,7 @@
 #include "block.h"
 using namespace std;
 
-class oblock : public Block {
+class oblock: public Block {
     public:
     oblock(Board *b, char type);
     bool initBlock() override;
