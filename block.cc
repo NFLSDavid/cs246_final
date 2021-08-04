@@ -20,7 +20,14 @@ Block::Block(Board *b, char type): b{b}, type{type} {
     //p = make_pair(0, 3); 
 }
 
-
+void Block::initNextBlock() {
+    int len = p_array.size();
+    for (int i = 0; i < len; ++i) {
+        int x = p_array.at(i).first;
+        int y = p_array.at(i).second;
+        this->b->cells.at(y).at(x).get()->setType(type);
+    }
+}
 
 void Block::setFalse() {
     int len = p_array.size();
@@ -45,11 +52,16 @@ void Block::setTrue() {
 // point(x, y) -> x,y 为坐标的x,y
 // cells[i][j] -> i = y, j = x
 bool Block::checkValidMove() {
+
+    if (p.second == 21) {
+        return true;
+    }
     int len = p_array.size();
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;  
 
+        
         if (x < 0 || y < 0 || 
             x > 10 || y > 17) {  // whether fall out of the board
             return false;
@@ -122,17 +134,16 @@ void Block::right() {
     p.first += 1;
 }
 
-/*void Block::drop() {
-    int len = p_array.size();
+void Block::drop() {
     setFalse();
-    moveUp();
-    valid = checkValidMove();
-    if (valid == false) {
+    while (valid) {  // valid刚开始都是true的
         moveDown();
-        valid = true;
+        valid = checkValidMove();
     }
+    moveUp();
     setTrue();
-}*/
+    valid = true;
+}
 
 void Block::down() {
     setFalse();

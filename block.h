@@ -25,7 +25,7 @@ class Block {
     // if we failed to init a new block, then we return false; and that could tell the game
     // to end; if true, then we successfully created a block
     virtual bool initBlock(int x, int y) = 0; 
-
+    void initNextBlock();
     virtual void clockwise() = 0;
     virtual void counterclockwise() = 0;
     void left();

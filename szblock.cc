@@ -5,6 +5,7 @@ szblock::szblock(Board *b, char type) : Block{b, type} {}
 
 bool szblock::initBlock(int x, int y) {
     // x = 0, y = 3
+    p = make_pair(x, y);
     if (type == 'Z') {
         p_array.emplace_back(make_pair(x, y-1));
         p_array.emplace_back(make_pair(x+1, y-1));
@@ -21,11 +22,29 @@ bool szblock::initBlock(int x, int y) {
     valid = checkValidMove();
     if (valid) {
         setTrue();
-        p = make_pair(x, y);
+        //p = make_pair(x, y);
         return true;
     }
     return false;
 }
+
+
+/*void szblock::initNextBlock() {
+    int x = 0;
+    int y = 20;
+    if (type == 'Z') {
+        p_array.emplace_back(make_pair(x, y-1));
+        p_array.emplace_back(make_pair(x+1, y-1));
+        p_array.emplace_back(make_pair(x+1, y));
+        p_array.emplace_back(make_pair(x+2, y));
+    } else {
+        p_array.emplace_back(make_pair(x+1, y-1));
+        p_array.emplace_back(make_pair(x+1, y));
+        p_array.emplace_back(make_pair(x, y));
+        p_array.emplace_back(make_pair(x+2, y-1));
+    }
+    setTrue();
+}*/
 
 
 bool szblock::judgeGraph() {

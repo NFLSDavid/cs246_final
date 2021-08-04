@@ -8,14 +8,27 @@ bool lblock::initBlock(int x, int y) {
     p_array.emplace_back(make_pair(x + 1, y));
     p_array.emplace_back(make_pair(x + 2, y));
     p_array.emplace_back(make_pair(x + 2, y - 1));
+    p = make_pair(x, y);
     valid = checkValidMove();
     if (valid) {
         setTrue();
-        p = make_pair(x, y);
+        //p = make_pair(x, y);
         return true;
     }
     return false;
 }
+
+
+/*void lblock::initNextBlock() {
+    int x = 0;
+    int y = 20;
+    p_array.emplace_back(make_pair(x, y));
+    p_array.emplace_back(make_pair(x + 1, y));
+    p_array.emplace_back(make_pair(x + 2, y));
+    p_array.emplace_back(make_pair(x + 2, y - 1));
+    setTrue();
+}*/
+
 
 bool lblock::pOccupied() {
     int len = p_array.size();

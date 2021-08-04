@@ -9,8 +9,11 @@
 using namespace std;
 
 int main() {
-    shared_ptr<Board> b1 = make_shared<Board>();
+    shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     b1->initAllCells();
+    b1->update();
+    
+    
     iblock b = iblock{b1.get(), 'I'};
     szblock z = szblock{b1.get(), 'Z'};
     szblock s = szblock{b1.get(), 'S'};
@@ -18,24 +21,24 @@ int main() {
     //jblock j = jblock(b1.get(), 'J');
     Block *j = new jblock{b1.get(), 'J'};
     //b.initBlock();
-    j->initBlock(0,3);
-    b1->printBoard();
+    //j->initBlock(0,3);
+    //b1->printBoard();
     string cmd;
     while (true) {
         cin >> cmd;
         
         if (cmd == "right") {
             //b.setFalse();
-            j->right();
+            b1->curRight();
             
         } else if (cmd == "left") {
-            j->left();
+            b1->curLeft();
         } else if (cmd == "down") {
-            j->down();
+            b1->curDown();
         } else if (cmd == "counterclockwise") {
-            j->counterclockwise();
+            b1->curCC();
         } else if (cmd == "clockwise") {
-            j->clockwise();
+            b1->curC();
         } else if (cmd == "I") {
             j->setFalse();  // currBlock setFalse(disappear)
             iblock *i = new iblock{b1.get(), 'I'};
@@ -46,6 +49,9 @@ int main() {
                 pop the original current block out
                 push the new block in instead
             }*/
+        } else if (cmd == "drop") {
+            b1->curDrop();
+            b1->update();
         }
         b1->printBoard();
     } 

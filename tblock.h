@@ -8,6 +8,7 @@ class tblock : public Block {
     public:
     tblock(Board *b, char type);
     bool initBlock(int x, int y) override;
+    //void initNextBlock() override;
     void clockwise() override;
     void counterclockwise() override;
 
