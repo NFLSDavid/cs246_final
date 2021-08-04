@@ -1,6 +1,7 @@
 //#include "abc_block.h"
-#include "board.h"
-
+#ifndef _LEVEL_H_
+#define _LEVEL_H_
+#include "abc_board.h"
 /*class Level: public abc_block {
     public:
     virtual void clockwise();
@@ -18,18 +19,33 @@
     abc_block *component;
 };*/
 
-class Level: public Board {
+class Level: public abc_board {
     public:
-        virtual void currClockwise();
-        virtual void currCounterclockwise();
+        void update();
+        std::shared_ptr<Block> produceBlock(char) override;
+        virtual void newBlock() override;
+        virtual void printNextBlock() override;
+        void initAllCells() override;
+        void restart() override;
+        void clear() override;
+        void print() override;
+        /*void force();   
+        void blind();   // maybe a decorator for each one
+        void heavy();  // 需要好好考虑*/
 
-        virtual void currLeft();
-        virtual void currRight();
-        virtual void currDown();
-        void drop();
-        void clear();
+        virtual void curRight() override;
+        virtual void curLeft() override;
+        virtual void curDown() override;
+        virtual void curCC() override;
+        virtual void curC() override;
+        void curDrop() override;
+
+        // for testing
+        void printBoard() override;
         virtual ~Level();
     protected:
-        Level(Board *c);
-        Board *component;
+        Level(abc_board *c);
+        abc_board *component;
 };
+
+#endif

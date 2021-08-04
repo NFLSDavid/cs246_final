@@ -5,13 +5,13 @@
 #include <memory>
 #include <queue>
 #include <string>
-//#include "block.h"
+#include "abc_board.h"
 
 using namespace std;
 
 class Cell;
 class Block;
-class Board {
+class Board: public abc_board {
     private:
     string filename;
     queue <char> toBeGenerated;
@@ -20,32 +20,33 @@ class Board {
     
     int level;
     int score;          //可能要改改
-    shared_ptr<Block> produceBlock(char);
     bool checkfull(int row_num);
 
     public:
     vector <vector <shared_ptr<Cell>>> cells;
 
     Board(string filename);
-    void update();
-    void newBlock();
-    void initAllCells();
-    void restart();
-    void clear();
-    void print();
-    void force();
+    void update() override;
+    shared_ptr<Block> produceBlock(char) override;
+    void newBlock() override;
+    void printNextBlock() override;
+    void initAllCells() override;
+    void restart() override;
+    void clear() override;
+    void print() override;
+    /*void force();
     void blind();
-    void heavy();
+    void heavy();*/
 
-    void curRight();
-    void curLeft();
-    void curDown();
-    void curCC();
-    void curC();
-    void curDrop();
+    void curRight() override;
+    void curLeft() override;
+    void curDown() override;
+    void curCC() override;
+    void curC() override;
+    void curDrop() override;
 
     // for testing
-    void printBoard();
+    void printBoard() override;
     ~Board();
 };
 

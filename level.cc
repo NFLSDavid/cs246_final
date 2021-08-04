@@ -1,31 +1,60 @@
 #include "level.h"
 
-Level::Level(abc_block *c): component{c} {}
+Level::Level(abc_board *c): component{c} {}
 
-void Level::clockwise() {
-    component->clockwise();
+void Level::curCC() {
+    component->curCC();
 }
 
-void Level::counterclockwise() {
-    component->counterclockwise();
+void Level::curC() {
+    component->curC();
 }
 
-void Level::left() {
-    component->left();
+void Level::curLeft() {
+    component->curLeft();
 }
 
-void Level::right() {
-    component->right();
+void Level::curRight() {
+    component->curRight();
 }
 
-void Level::down() {
-    component->down();
+void Level::curDown() {
+    component->curDown();
 }
 
-void Level::up() {
-    component->up();
+
+void Level::curDrop() {
+    component->curDrop();
 }
 
-void Level::drop() {
-    component->drop();
+
+void Level::initAllCells() {
+    component->initAllCells();
 }
+
+void Level::newBlock() {
+    component->newBlock();
+}
+
+
+void Level::restart() {
+    component->restart();
+}
+
+
+void Level::clear() {
+    component->clear();
+}
+
+void Level::printBoard() {
+    component->printBoard();
+
+}
+
+ void Level::update() {
+     component->update();
+ }
+
+ std::shared_ptr<Block> Level::produceBlock(char c) {
+     component->produceBlock(c);
+ }

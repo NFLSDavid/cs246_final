@@ -101,6 +101,20 @@ void Board::clear() {
     }
 }
 
+void Board::printNextBlock() {
+    int rows  = cells.size();
+    int cols = cells.at(0).size();
+    auto b = produceBlock(toBeGenerated.front());
+    b->initBlock(0, 21);
+    for (int i = 20; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cout << cells.at(i).at(j).get()->getType();
+        }
+        cout << endl;
+    }
+    b->setFalse();
+}
+
 void Board::printBoard() {
     int rows  = cells.size();
     int cols = cells.at(0).size();
@@ -124,15 +138,7 @@ void Board::printBoard() {
     cout << endl;
     cout << "Next:" << endl;
 
-    auto b = produceBlock(toBeGenerated.front());
-    b->initBlock(0, 21);
-    for (int i = 20; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            cout << cells.at(i).at(j).get()->getType();
-        }
-        cout << endl;
-    }
-    b->setFalse();
+    printNextBlock();
 
 }
 
@@ -164,3 +170,5 @@ void Board::curC() {
 void Board::curDrop() {
     active_blocks.back()->drop();
 }
+
+void Board::print() {}
