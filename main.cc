@@ -4,6 +4,7 @@
 #include "iblock.h"
 #include "tblock.h"
 #include "oblock.h"
+#include "jblock.h"
 #include <iostream>
 using namespace std;
 
@@ -14,8 +15,10 @@ int main() {
     szblock z = szblock{b1.get(), 'Z'};
     szblock s = szblock{b1.get(), 'S'};
     tblock t = tblock(b1.get(), 'T');
+    //jblock j = jblock(b1.get(), 'J');
+    Block *j = new jblock{b1.get(), 'J'};
     //b.initBlock();
-    s.initBlock(0,3);
+    j->initBlock(0,3);
     b1->printBoard();
     string cmd;
     while (true) {
@@ -23,18 +26,18 @@ int main() {
         
         if (cmd == "right") {
             //b.setFalse();
-            t.right();
+            j->right();
             
         } else if (cmd == "left") {
-            t.left();
+            j->left();
         } else if (cmd == "down") {
-            t.down();
+            j->down();
         } else if (cmd == "counterclockwise") {
-            t.counterclockwise();
+            j->counterclockwise();
         } else if (cmd == "clockwise") {
-            t.clockwise();
+            j->clockwise();
         } else if (cmd == "I") {
-            t.setFalse();  // currBlock setFalse(disappear)
+            j->setFalse();  // currBlock setFalse(disappear)
             iblock *i = new iblock{b1.get(), 'I'};
             bool initStat = i->initBlock(t.getLeftCorner()->first, t.getLeftCorner()->second);
             if (!initStat) {  // if we failed to init this new block
