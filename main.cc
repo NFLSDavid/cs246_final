@@ -6,6 +6,7 @@
 #include "oblock.h"
 #include "jblock.h"
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 void printRiver() {
@@ -68,10 +69,65 @@ void printGameBoard(Board *b1, Board *b2) {
 }
 
 
-int main() {
+/*
+-text runs the program in text-only mode. No graphics are displayed. The default behaviour (no -text) is to show
+both text and graphics.
+• -seed xxx sets the random number generator’s seed to xxx. If you don’t set the seed, you always get the same
+random sequence every time you run the program. It’s good for testing, but not much fun.
+• -scriptfile1 xxx Uses xxx instead of sequence1.txt as a source of blocks for level 0, for player 1.
+• -scriptfile2 xxx Uses xxx instead of sequence2.txt as a source of blocks for level 0, for player 2.
+• -startlevel n Starts the game in level n. The game starts in level 0 if this option is not supplied.
+*/
+bool processArgs(int argc, char** argv, std::string* flagStr, bool* flags, istream** infile, ostream** outfile) {
+    //int count = 0;
+    for (int i = 1; i < argc; i++) {
+        std::string curr = argv[i];
+        if (curr == "-text") {
+            // do not show graphical display
+        } else if (curr == "-seed") {
+            std::string seed = argv[i + 1];
+            // set seed
+        } else if (curr == "-scriptfile1") {
+            std::string filename = argv[i + 1];
+            // filename作为参数pass进board里
+            
+        } else if (curr == "-scriptfile1") {
+            std::string filename = argv[i + 1];
+            
+        } else if (curr == "-startlevel") {
+            std::stringstream slevel = argv[i + 1];
+            
+        }
+        if ( curr[0] == '-') {
+            if (curr[1] == 'c') {
+                flags[0] = true;
+                flagStr[0] = curr.substr(2);
+            } else if (curr[1] == 'd') {
+                flags[1] = true;
+                flagStr[0] = curr.substr(2);
+            } else if (curr[1] == 'f') {
+                flags[2] = true;
+                flagStr[1] = curr.substr(2); // we start at the index where the numbers come out
+            } else {
+                cerr << "the program only takes in -c, -f, -d flags" << endl;
+                return false;
+            }
+        } else {
+            if (count == 0) {
+                *infile = new ifstream( argv[i] );
+                count += 1;
+            } else {
+                *outfile = new ofstream( argv[i]);
+            }
+        }
+    }
+
+    return true;
+}
+int main(int argc, char* argv[]) {
     //shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
-    shared_ptr<Board> b2 = make_shared<Board>("allO.txt");
+    shared_ptr<Board> b2 = make_shared<Board>("biquadris_sequence2.txt");
     b1->initAllCells();
     b2->initAllCells();
     b1->setNextType();
