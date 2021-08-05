@@ -1,7 +1,7 @@
 #include "iblock.h"
 using namespace std;
 
-iblock::iblock(Board *b, char type) : Block{b, type} {}
+iblock::iblock(Board *b, int level, char type) : Block{b, level, type} {}
 
 bool iblock::initBlock(int x, int y) {
     for (int i = 0; i < 4; ++i) {

@@ -1,7 +1,7 @@
 #include "tblock.h"
 using namespace std;
 
-tblock::tblock(Board *b, char type) : Block{b, type} {}
+tblock::tblock(Board *b, int level, char type) : Block{b, level, type} {}
 
 bool tblock::initBlock(int x, int y) {
     /*p_array.emplace_back(make_pair(1, 2));

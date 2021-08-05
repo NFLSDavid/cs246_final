@@ -1,7 +1,7 @@
 #include "lblock.h"
 using namespace std;
 
-lblock::lblock(Board *b, char type) : Block{b, type} {}
+lblock::lblock(Board *b, int level, char type) : Block{b, level, type} {}
 
 bool lblock::initBlock(int x, int y) {
     p_array.emplace_back(make_pair(x, y));

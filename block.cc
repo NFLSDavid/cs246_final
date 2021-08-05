@@ -6,7 +6,7 @@ using namespace std;
 
 Block::~Block() {}
 
-Block::Block(Board *b, char type): b{b}, type{type} {}
+Block::Block(Board *b, int level, char type): b{b}, level{level}, type{type}, activeNum{4} {}
 
 void Block::initNextBlock() {
     int len = p_array.size();

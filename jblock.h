@@ -6,7 +6,7 @@ using namespace std;
 
 class jblock : public Block {
     public:
-    jblock(Board *b, char type);
+    jblock(Board *b, int level, char type);
     bool initBlock(int x, int y) override;
     //void initNextBlock() override;
     void clockwise() override;

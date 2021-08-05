@@ -1,7 +1,7 @@
 #include "oblock.h"
 using namespace std;
 
-oblock::oblock(Board *b, char type) : Block{b, type} {}
+oblock::oblock(Board *b, int level, char type) : Block{b, level, type} {}
 
 bool oblock::initBlock(int x, int y) {
     // x = 0; y = 3

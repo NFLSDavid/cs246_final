@@ -1,7 +1,7 @@
 #include "jblock.h"
 using namespace std;
 
-jblock::jblock(Board *b, char type) : Block{b, type} {}
+jblock::jblock(Board *b, int level, char type) : Block{b, level, type} {}
 
 bool jblock::initBlock(int x, int y) {
     p_array.emplace_back(make_pair(x, y - 1));

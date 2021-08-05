@@ -21,7 +21,7 @@ class Block {
     void moveDown();
     
     public:
-    Block(Board *b, char type);
+    Block(Board *b, int level, char type);
 
     // if we failed to init a new block, then we return false; and that could tell the game
     // to end; if true, then we successfully created a block
