@@ -32,32 +32,37 @@ void Level4::setNextType() {
     b->initBlock(0, 21);
 }
 
+void Level4::heavyOne() {
+    if (getCurrBlock()->getLevel() == 3 || getCurrBlock()->getLevel() == 4) {
+        component->getCurrBlock()->down();
+    }
+}
 
 void Level4::curRight() {
     component->getCurrBlock()->right();
-    component->getCurrBlock()->down();
+    heavyOne();
 }
 
 
 void Level4::curLeft() {
     component->getCurrBlock()->left();
-    component->getCurrBlock()->down();
+    heavyOne();
 }
 
 
 void Level4::curDown() {
     component->getCurrBlock()->down();
-    component->getCurrBlock()->down();
+    heavyOne();
 }
 
 
 void Level4::curCC() {
     component->getCurrBlock()->counterclockwise();
-    component->getCurrBlock()->down();
+    heavyOne();
 }
 
 
 void Level4::curC() {
     component->getCurrBlock()->clockwise();
-    component->getCurrBlock()->down();
+    heavyOne();
 }

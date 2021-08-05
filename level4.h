@@ -28,6 +28,7 @@ class Level4: public Level {
         int countNotCleared;  //如果%5 = 0 且不等于0, 就drop (在每次drop函数的时候check并unpdate)
 
         bool dropStar(); // if dropped successfully, return true
+        void heavyOne(); //看一下.cc file就懂了，只有当block level为3,4时，我们才往下一格
     
 };
 

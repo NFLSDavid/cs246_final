@@ -17,6 +17,11 @@ void Block::initNextBlock() {
     }
 }
 
+int Block::getLevel() {
+    return level;
+}
+
+
 void Block::setFalse() {
     int len = p_array.size();
     for (int i = 0; i < len; ++i) {

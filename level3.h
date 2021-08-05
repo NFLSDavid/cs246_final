@@ -23,6 +23,8 @@ class Level3: public Level {
         void curCC() override;
         void curC() override;
         ~Level3();
+    private:
+        void heavyOne();
 };
 
 #endif

@@ -34,6 +34,10 @@ class Block {
     void down();
     void drop();
     bool dropRow(int);
+
+    // getter
+    int getLevel();
+    // setter
     void setFalse();        // set False and set type to space
     void setTrue();
     shared_ptr<point> getLeftCorner();
