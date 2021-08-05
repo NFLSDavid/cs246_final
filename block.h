@@ -14,6 +14,7 @@ class Block {
     private:
     Board *b;
     int level; 
+    int activeNum;
     void moveLeft();
     void moveRight();
     void moveUp();
@@ -32,6 +33,7 @@ class Block {
     void right();
     void down();
     void drop();
+    bool dropRow(int);
     void setFalse();        // set False and set type to space
     void setTrue();
     shared_ptr<point> getLeftCorner();

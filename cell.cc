@@ -27,6 +27,14 @@ void Cell::setState(bool s) {
     occupied = s;
 }
 
+void Cell::setX(int x) {
+    this->x = x;
+}
+
+void Cell::setY(int y) {
+    this->y = y;
+}
+
 void Cell::turnOff() {
     occupied = false;
     type = ' ';
@@ -47,3 +55,27 @@ void Cell::print() {
     std::cout << type;
     // the newline character will be added in the actual loop in the Board class
 }
+
+
+/*
+Cell::Cell(const Cell & other) : x{other.x}, y{other.y}, occupied{other.occupied}, type{other.type} {}
+
+Cell::Cell(Cell &&other) : x{other.x}, y{other.y}, occupied{other.occupied}, type{other.type} {}
+
+Cell & Cell::operator=(const Cell &other) {
+    Cell tmp {other};
+    swap(x, tmp.x);
+    swap(y, tmp.y);
+    swap(occupied, tmp.occupied);
+    swap(type, tmp.type);
+    return *this;
+}
+
+Cell & Cell::operator=(Cell &&other) {
+    swap(x, other.x);
+    swap(y, other.y);
+    swap(occupied, other.occupied);
+    swap(type, other.type);
+    return *this;
+}
+*/

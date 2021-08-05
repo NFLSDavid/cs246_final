@@ -161,3 +161,27 @@ shared_ptr<point> Block::getLeftCorner() {
     auto s = make_shared<point>(p.first, p.second);
     return s;
 }
+
+
+bool Block::dropRow(int r) {
+    int len = p_array.size();
+    for (int i = 0; i < len; ++i) {
+        point pi = p_array.at(i);
+        if (r == pi.first) {
+            --activeNum;           
+            p_array.erase(p_array.begin() + i);
+            if (activeNum == 0) {
+                return false;
+            }
+        }
+    }
+    
+    len = p_array.size();
+    for (int j = 0; j < len; ++j) {
+        point pj = p_array.at(j);
+        if (pj.second < r) {
+            ++p_array.at(j).second;
+        }
+    }
+    return true;
+}

@@ -10,6 +10,9 @@ class Cell {
     Cell(int x, int y, char type);
     int getX();
     int getY();
+    void setX(int);
+    void setY(int);
+
     char getType();
     void setType(char t);
 

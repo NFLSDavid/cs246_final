@@ -13,7 +13,7 @@
 using namespace std;
 
 Board::Board(string filename) : filename{filename}, level{0}, score{0} {
-    std::ifstream infile{"biquadris_sequence1.txt"};
+    std::ifstream infile{filename};
     char blockType;
     while ( true ) {
         infile >> blockType;
@@ -32,6 +32,18 @@ void Board::initAllCells() {
         }
         cells.push_back(row);
     }
+}
+
+Block* Board::getCurrBlock() {
+    return active_blocks[active_blocks.size() - 1].get();
+}
+
+void Board::popCurrBlock() {
+    active_blocks.pop_back();
+}
+
+void Board::pushCurrBlock(shared_ptr<Block> b) {
+    active_blocks.push_back(b);
 }
 
 shared_ptr<Block> Board::produceBlock(char c) {
@@ -82,27 +94,10 @@ void Board::restart() {
 }
 
 // 
-bool Board::checkfull(int row_num) {
-    for (int i = 0; i < 11; ++i) {
-        if (!cells.at(row_num).at(i).get()->getState()) {
-            return false;
-        }
-    }
-    return true;
-}
 
-void Board::clear() {
-    int num = 0;
-    for (int i = 0; i < 18; ++i) {
-        if (checkfull(i)) {
-            ++num;
-            
-        }
-    }
-}
 
-void Board::printNextBlock() {
-    int rows  = cells.size();
+void Board::printNextBlock(char c) {
+    /*int rows  = cells.size();
     int cols = cells.at(0).size();
     auto b = produceBlock(toBeGenerated.front());
     b->initBlock(0, 21);
@@ -112,7 +107,7 @@ void Board::printNextBlock() {
         }
         cout << endl;
     }
-    b->setFalse();
+    b->setFalse();*/
 }
 
 void Board::printBoard() {
@@ -138,7 +133,7 @@ void Board::printBoard() {
     cout << endl;
     cout << "Next:" << endl;
 
-    printNextBlock();
+    printNextBlock('Z'); // not right
 
 }
 
@@ -169,6 +164,56 @@ void Board::curC() {
 
 void Board::curDrop() {
     active_blocks.back()->drop();
+    clear();
 }
 
 void Board::print() {}
+
+
+
+bool Board::checkfull(int row_num) {
+    for (int i = 0; i < 11; ++i) {
+        if (!cells.at(row_num).at(i).get()->getState()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Board::clear() {
+    vector <int> fullRows;
+    int num = 0;
+    for (int i = 0; i < 18; ++i) {
+        if (checkfull(i)) {
+            ++num;
+            fullRows.emplace_back(i);
+        }
+    }
+    if (num == 0) {
+        return;
+    }
+    int len1 = fullRows.size();  // 可以消掉的rows （16， 17）
+    int len2 = active_blocks.size();
+
+    for (int i = 0; i < len1; i++) {
+        int rowNum = fullRows.at(i);
+
+        for (int j = rowNum; j > 0; --j) {
+            for (int k = 0; k < 11; ++k) {
+                char upType = cells.at(j - 1).at(k)->getType();
+                char upOccupied = cells.at(j - 1).at(k)->getState();
+                cells.at(j).at(k)->setType(upType);
+                cells.at(j).at(k)->setState(upOccupied);
+            }
+        }
+        for (int t = 0; t < len2; ++t) {
+            if (!active_blocks.at(t)->dropRow(rowNum)) {
+                active_blocks.erase(active_blocks.begin() + t);
+            }
+        }
+        for (int k = 0; k < 11; ++k) {
+            cells.at(0).at(k).get()->setState(false);
+            cells.at(0).at(k).get()->setType(' ');
+        }
+    }
+}

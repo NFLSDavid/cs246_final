@@ -9,7 +9,8 @@
 using namespace std;
 
 int main() {
-    shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
+    //shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
+    shared_ptr<Board> b1 = make_shared<Board>("allO.txt");
     b1->initAllCells();
     b1->update();
     
@@ -40,15 +41,19 @@ int main() {
         } else if (cmd == "clockwise") {
             b1->curC();
         } else if (cmd == "I") {
-            j->setFalse();  // currBlock setFalse(disappear)
-            iblock *i = new iblock{b1.get(), 'I'};
-            bool initStat = i->initBlock(t.getLeftCorner()->first, t.getLeftCorner()->second);
+            Block * curr = b1->getCurrBlock();
+            curr->setFalse();  // currBlock setFalse(disappear)
+            auto i = make_shared<iblock>(b1.get(), 'I');
+            bool initStat = i->initBlock(curr->getLeftCorner()->first, curr->getLeftCorner()->second);
+            //bool initStat = i->initBlock(t.getLeftCorner()->first, t.getLeftCorner()->second);
             if (!initStat) {  // if we failed to init this new block
-                t.setTrue();
-            } /* else {
-                pop the original current block out
-                push the new block in instead
-            }*/
+                curr->setTrue();
+            }  else {
+                b1->popCurrBlock();
+                b1->pushCurrBlock(i);
+                //pop the original current block out
+                //push the new block in instead
+            }
         } else if (cmd == "drop") {
             b1->curDrop();
             b1->update();

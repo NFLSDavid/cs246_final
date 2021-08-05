@@ -6,17 +6,17 @@
 #include <queue>
 #include <string>
 #include "abc_board.h"
-
+#include "block.h"
 using namespace std;
 
 class Cell;
-class Block;
+//class Block;
 class Board: public abc_board {
     private:
     string filename;
+    char nextBlock;
     queue <char> toBeGenerated;
     vector <shared_ptr<Block>> active_blocks;
-    //shared_ptr<Block> nextBlock;
     
     int level;
     int score;          //可能要改改
@@ -26,10 +26,13 @@ class Board: public abc_board {
     vector <vector <shared_ptr<Cell>>> cells;
 
     Board(string filename);
+    Block* getCurrBlock() override;
+    void popCurrBlock() override;
+    void pushCurrBlock(shared_ptr<Block> b) override;
     void update() override;
     shared_ptr<Block> produceBlock(char) override;
     void newBlock() override;
-    void printNextBlock() override;
+    void printNextBlock(char) override;
     void initAllCells() override;
     void restart() override;
     void clear() override;

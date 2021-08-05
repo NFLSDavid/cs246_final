@@ -24,7 +24,7 @@ class Level: public abc_board {
         void update();
         std::shared_ptr<Block> produceBlock(char) override;
         virtual void newBlock() override;
-        virtual void printNextBlock() override;
+        virtual void printNextBlock(char) override;
         void initAllCells() override;
         void restart() override;
         void clear() override;
