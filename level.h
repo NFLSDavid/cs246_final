@@ -32,7 +32,7 @@ class Level: public abc_board {
     void popCurrBlock() override;
     void pushCurrBlock(shared_ptr<Block> b) override;
     void changeCurrBlock(char type) override;
-    virtual void newBlock() override = 0;
+    virtual bool newBlock() override = 0;
     virtual void setNextType() override = 0;
     void clearNextDisplay() override;
 

@@ -89,13 +89,20 @@ int main() {
                 player = b1;
                 cout << "Player1 Go" << endl;
                 
-                player->newBlock(); // have a new block
+                if (!player->newBlock()) {
+                    continueGame = false;
+                    break;
+                } // have a new block
+
                 printGameBoard(b1.get(), b2.get());
                 
             } else {
                 player = b2;
                 cout << "Player2 Go" << endl;
-                player->newBlock(); // have a new block
+                if (!player->newBlock()) {
+                    continueGame = false;
+                    break;
+                }
                 printGameBoard(b1.get(), b2.get());
             }
 
@@ -131,7 +138,7 @@ int main() {
                     //player->update();
                     break;
                 } else if (cmd == "levelup") {
-
+                    
                 } else if (cmd == "leveldown") {
                     
                 }

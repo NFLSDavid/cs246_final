@@ -148,12 +148,13 @@ void Board::setNextType() {
     b->initBlock(0, 21);
 }
 
-void Board::newBlock() {
+bool Board::newBlock() {
     toBeGenerated.push(nextBlockType);
     auto b = produceBlock(nextBlockType);
     active_blocks.push_back(b);
-    b->initBlock(0, 3);
+    bool successful = b->initBlock(0, 3);
     setNextType();
+    return successful;
 }
 
 /*void Board::nextBlock() {

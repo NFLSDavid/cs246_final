@@ -57,7 +57,7 @@ class Board: public abc_board {
     void popCurrBlock() override;
     void pushCurrBlock(shared_ptr<Block> b) override;
     void changeCurrBlock(char type) override;
-    void newBlock() override;
+    bool newBlock() override;
     void setNextType() override;
     void clearNextDisplay() override;
 

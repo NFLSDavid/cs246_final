@@ -38,7 +38,7 @@ class abc_board {
     virtual void popCurrBlock() = 0;
     virtual void pushCurrBlock(shared_ptr<Block> b) = 0;
     virtual void changeCurrBlock(char type) = 0;
-    virtual void newBlock() = 0;
+    virtual bool newBlock() = 0;
     virtual void setNextType() = 0;
     virtual void clearNextDisplay() = 0;
 

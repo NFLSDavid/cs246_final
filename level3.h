@@ -15,7 +15,7 @@ class Block;
 
 class Level3: public Level {
     public:
-        void newBlock() override;
+        bool newBlock() override;
         void setNextType() override;
         void curRight() override;
         void curLeft() override;

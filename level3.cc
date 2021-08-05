@@ -1,7 +1,7 @@
 #include "level3.h"
 #include <cstdlib>
 
-void Level3::newBlock() {
+bool Level3::newBlock() {
     char c = component->getNextType();
     auto b = produceBlock(c);
     component->pushActiveBlocks(b);
