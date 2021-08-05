@@ -6,19 +6,7 @@ using namespace std;
 
 Block::~Block() {}
 
-Block::Block(Board *b, char type): b{b}, type{type} {
-    /*valid = checkValidMove();   // we check if valid after we constructed the block, if false, game OVER
-    if (valid) {
-        int len = p_array.size();
-        for (int i = 0; i < len; ++i) {
-            int x = p_array.at(i).first;
-            int y = p_array.at(i).second;
-            this->b->cells.at(y).at(x).get()->setState(true);
-            // this->b->cells.at(y).at(x)->setState(true);
-        }
-    }*/
-    //p = make_pair(0, 3); 
-}
+Block::Block(Board *b, char type): b{b}, type{type} {}
 
 void Block::initNextBlock() {
     int len = p_array.size();

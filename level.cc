@@ -1,27 +1,33 @@
 #include "level.h"
+#include <string>
 using namespace std;
 
 Level::Level(abc_board *c): component{c} {}
 
-void Level::curCC() {
-    component->curCC();
+void Level::curRight() {
+    component->getCurrBlock()->right();
 }
 
-void Level::curC() {
-    component->curC();
-}
 
 void Level::curLeft() {
-    component->curLeft();
+    component->getCurrBlock()->left();
 }
 
-void Level::curRight() {
-    component->curRight();
-}
 
 void Level::curDown() {
-    component->curDown();
+    component->getCurrBlock()->down();
 }
+
+
+void Level::curCC() {
+    component->getCurrBlock()->counterclockwise();
+}
+
+
+void Level::curC() {
+    component->getCurrBlock()->clockwise();
+}
+
 
 void Level::curDrop() {
     component->curDrop();

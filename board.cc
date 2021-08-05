@@ -18,9 +18,47 @@ Board::Board(string filename) : filename{filename}, level{0}, score{0} {
     while ( true ) {
         infile >> blockType;
         toBeGenerated.push(blockType);
-        if ( infile.fail() ) break;
+        if (infile.fail()) break;
     }
 
+}
+
+Board::~Board() {}
+
+/*vector<shared_ptr<Block>> Board::getActiveBlocks() const {
+    return active_blocks;
+}*/
+
+char Board::getGeneratedFront() const {
+    return toBeGenerated.front();
+}
+
+
+void Board::pushActiveBlocks(shared_ptr<Block> b) {
+    active_blocks.push_back(b);
+} 
+
+void Board::pushBackToGenerated(char c) {
+    toBeGenerated.push(c);
+}  
+
+void Board::popGenerated() {
+    toBeGenerated.pop();
+} 
+
+void Board::setNext(char c) {
+    nextBlockType = c;
+} 
+
+
+
+
+char Board::getNextType() const {
+    return nextBlockType;
+}
+
+int Board::getLevel() const {
+    return 0;
 }
 
 void Board::initAllCells() {
@@ -34,9 +72,6 @@ void Board::initAllCells() {
     }
 }
 
-int Board::getLevel() {
-    return 0;
-}
 Block* Board::getCurrBlock() {
     return active_blocks[active_blocks.size() - 1].get();
 }
@@ -95,7 +130,7 @@ shared_ptr<Block> Board::produceBlock(char c) {
 }*/
 
 void Board::clearNextDisplay() {
-    int rows  = cells.size();
+    int rows = cells.size();
     int cols = cells.at(0).size();
     for (int i = 20; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -125,10 +160,7 @@ void Board::newBlock() {
     char blockType = toBeGenerated.front();
     nextBlock = produceBlock(blockType);
     //nextBlock = b;
-
 }*/
-
-Board::~Board() {}
 
 void Board::restart() {
     active_blocks.clear();

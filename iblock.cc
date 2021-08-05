@@ -21,13 +21,6 @@ bool iblock::initBlock(int x, int y) {
 }
 
 
-/*void iblock::initNextBlock() {
-    for (int i = 0; i < 4; ++i) {
-        p_array.emplace_back(make_pair(i, 20));
-    }
-    setTrue();
-}*/
-
 
 void iblock::moveClockwise() {
     int len = p_array.size();

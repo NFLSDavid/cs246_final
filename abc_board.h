@@ -9,22 +9,40 @@ class Cell;
 //class Block;
 class abc_board {
     public:
+    virtual ~abc_board();
+    // accessors:
+    //virtual vector<shared_ptr<Block>> getActiveBlocks() const = 0;
+    virtual char getGeneratedFront() const = 0;
+    virtual int getLevel() const = 0;
+    virtual char getNextType() const = 0;
 
+    //mutators
+    virtual void pushActiveBlocks(shared_ptr<Block> b) = 0; 
+    virtual void pushBackToGenerated(char) = 0; 
+    virtual void popGenerated() = 0; 
+    virtual void setNext(char) = 0; // directly set nextBlockType
+
+    // methods on the board:
+    virtual void initAllCells() = 0;
+    virtual void restart() = 0;
+    virtual void clear() = 0;
+    virtual void initfs(string filename) = 0;
+    virtual void print() = 0;
+    /*virtual void force();
+    virtual void blind();
+    virtual void heavy();*/
+
+    // methods to create blocks:
+    virtual shared_ptr<Block> produceBlock(char c) = 0;
     virtual Block* getCurrBlock() = 0;
     virtual void popCurrBlock() = 0;
     virtual void pushCurrBlock(shared_ptr<Block> b) = 0;
     virtual void changeCurrBlock(char type) = 0;
     virtual void newBlock() = 0;
-    virtual void printNextBlock(char) = 0;
-    virtual void initAllCells() = 0;
-    virtual void restart() = 0;
-    virtual void clear() = 0;
-    virtual void print() = 0;
-    /*virtual void force();
-    virtual void blind();
-    virtual void heavy();*/
-    virtual std::shared_ptr<Block> produceBlock(char) = 0;
+    virtual void setNextType() = 0;
+    virtual void clearNextDisplay() = 0;
 
+    // methods to move blocks:
     virtual void curRight() = 0;
     virtual void curLeft() = 0;
     virtual void curDown() = 0;
@@ -34,17 +52,10 @@ class abc_board {
 
     // for testing
     virtual void printBoard() = 0;
-    virtual void initfs(string filename) = 0;
-    virtual void setNextType() = 0;
-    virtual void clearNextDisplay() = 0;
-
+    virtual void printNextBlock(char) = 0;
     virtual void printLevelLine() = 0;
     virtual void printScoreLine() = 0;
-    virtual void printRows(int) = 0;
-    virtual int getLevel() = 0;
-    virtual char getNextType() = 0;
-    virtual vector<shared_ptr<Block>> * getActiveBlocks() = 0;
-    virtual ~abc_board();
+    virtual void printRows(int r) = 0;
 };
 
 #endif
