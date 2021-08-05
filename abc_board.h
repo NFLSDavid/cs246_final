@@ -12,6 +12,7 @@ class abc_board {
     virtual Block* getCurrBlock() = 0;
     virtual void popCurrBlock() = 0;
     virtual void pushCurrBlock(shared_ptr<Block> b) = 0;
+    virtual void changeCurrBlock(char type) = 0;
     virtual void update() = 0;
     virtual void newBlock() = 0;
     virtual void printNextBlock(char) = 0;
@@ -33,6 +34,9 @@ class abc_board {
 
     // for testing
     virtual void printBoard() = 0;
+    virtual void initfs(string filename) = 0;
+    virtual void setNextType() = 0;
+    virtual void clearNextDisplay() = 0;
     ~abc_board();
 };
 

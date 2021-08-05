@@ -46,6 +46,25 @@ void Board::pushCurrBlock(shared_ptr<Block> b) {
     active_blocks.push_back(b);
 }
 
+
+void Board::changeCurrBlock(char type) {
+    Block *curr = getCurrBlock();
+    curr->setFalse();  // currBlock setFalse(disappear)
+
+    auto i = produceBlock(type);
+    cout << curr->getLeftCorner()->first << " " << curr->getLeftCorner()->second << endl;
+    bool initStat = i->initBlock(curr->getLeftCorner()->first, curr->getLeftCorner()->second);
+    if (!initStat) {  // if we failed to init this new block
+        curr->setTrue();
+    }  else {
+        popCurrBlock();
+        pushCurrBlock(i);
+        //pop the original current block out
+        //push the new block in instead
+    }
+}
+
+
 shared_ptr<Block> Board::produceBlock(char c) {
     shared_ptr<Block> b;
     if (c == 'Z' || c == 'S') {
@@ -64,13 +83,39 @@ shared_ptr<Block> Board::produceBlock(char c) {
     return b;
 }
 
-void Board::newBlock() {
+/*void Board::newBlock() {
     char blockType = toBeGenerated.front();
     toBeGenerated.pop();
     toBeGenerated.push(blockType);
     auto b = produceBlock(blockType);
     active_blocks.push_back(b);
     b->initBlock(0, 3);
+}*/
+void Board::clearNextDisplay() {
+    int rows  = cells.size();
+    int cols = cells.at(0).size();
+    for (int i = 20; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            cells.at(i).at(j).get()->setType(' ');
+        }
+    }
+}
+
+void Board::setNextType() {
+    nextBlockType = toBeGenerated.front();
+    toBeGenerated.pop();
+    auto b = produceBlock(nextBlockType);
+    //active_blocks.push_back(b);
+    clearNextDisplay();
+    b->initBlock(0, 21);
+}
+
+void Board::newBlock() {
+    toBeGenerated.push(nextBlockType);
+    auto b = produceBlock(nextBlockType);
+    active_blocks.push_back(b);
+    b->initBlock(0, 3);
+    setNextType();
 }
 
 /*void Board::nextBlock() {
@@ -79,6 +124,8 @@ void Board::newBlock() {
     //nextBlock = b;
 
 }*/
+
+
 
 
 
@@ -97,17 +144,15 @@ void Board::restart() {
 
 
 void Board::printNextBlock(char c) {
-    /*int rows  = cells.size();
+    int rows  = cells.size();
     int cols = cells.at(0).size();
-    auto b = produceBlock(toBeGenerated.front());
-    b->initBlock(0, 21);
+    
     for (int i = 20; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             cout << cells.at(i).at(j).get()->getType();
         }
         cout << endl;
     }
-    b->setFalse();*/
 }
 
 void Board::printBoard() {
@@ -170,7 +215,7 @@ void Board::curDrop() {
 void Board::print() {}
 
 
-
+/////////////////////////////////////////////////
 bool Board::checkfull(int row_num) {
     for (int i = 0; i < 11; ++i) {
         if (!cells.at(row_num).at(i).get()->getState()) {
@@ -217,3 +262,5 @@ void Board::clear() {
         }
     }
 }
+
+void Board::initfs(string filename) {}

@@ -8,8 +8,9 @@ bool iblock::initBlock(int x, int y) {
         p_array.emplace_back(make_pair(x, y));
         x++;
     }
+    x -= 4;
     p = make_pair(x, y);
-    x -= 3;
+   
     valid = checkValidMove();
     if (valid) {
         setTrue();

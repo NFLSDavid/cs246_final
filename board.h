@@ -14,7 +14,7 @@ class Cell;
 class Board: public abc_board {
     private:
     string filename;
-    char nextBlock;
+    char nextBlockType;
     queue <char> toBeGenerated;
     vector <shared_ptr<Block>> active_blocks;
     
@@ -29,6 +29,7 @@ class Board: public abc_board {
     Block* getCurrBlock() override;
     void popCurrBlock() override;
     void pushCurrBlock(shared_ptr<Block> b) override;
+    void changeCurrBlock(char type) override;
     void update() override;
     shared_ptr<Block> produceBlock(char) override;
     void newBlock() override;
@@ -50,6 +51,9 @@ class Board: public abc_board {
 
     // for testing
     void printBoard() override;
+    void initfs(string filename) override;
+    void setNextType() override;
+    void clearNextDisplay() override;
     ~Board();
 };
 
