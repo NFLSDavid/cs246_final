@@ -34,6 +34,9 @@ void Board::initAllCells() {
     }
 }
 
+int Board::getLevel() {
+    return 0;
+}
 Block* Board::getCurrBlock() {
     return active_blocks[active_blocks.size() - 1].get();
 }
@@ -64,7 +67,6 @@ void Board::changeCurrBlock(char type) {
     }
 }
 
-
 shared_ptr<Block> Board::produceBlock(char c) {
     shared_ptr<Block> b;
     if (c == 'Z' || c == 'S') {
@@ -91,6 +93,7 @@ shared_ptr<Block> Board::produceBlock(char c) {
     active_blocks.push_back(b);
     b->initBlock(0, 3);
 }*/
+
 void Board::clearNextDisplay() {
     int rows  = cells.size();
     int cols = cells.at(0).size();
@@ -125,10 +128,6 @@ void Board::newBlock() {
 
 }*/
 
-
-
-
-
 Board::~Board() {}
 
 void Board::restart() {
@@ -139,9 +138,6 @@ void Board::restart() {
         }
     }
 }
-
-// 
-
 
 void Board::printNextBlock(char c) {
     int rows  = cells.size();
@@ -154,38 +150,6 @@ void Board::printNextBlock(char c) {
         cout << endl;
     }
 }
-
-void Board::printBoard() {
-    int rows  = cells.size();
-    int cols = cells.at(0).size();
-    cout << "Level:" << setw(5) << level << endl;
-    cout << "Score:" << setw(5) << score << endl;
-    for (int i = 0; i < 11; i++) {
-        cout << '_';
-    }
-    cout << endl;
-
-    for (int i = 0; i < 18; i++) {
-        for (int j = 0; j < 11; j++) {
-            cout << cells.at(i).at(j).get()->getType();
-        }
-        cout << endl;
-    }
-
-    for (int i = 0; i < 11; i++) {
-        cout << '_';
-    }
-    cout << endl;
-    cout << "Next:" << endl;
-
-    printNextBlock('Z'); // not right
-
-}
-
- void Board::update() {
-     newBlock();
-     printBoard();
- }
 
 void Board::curRight() {
     active_blocks.back()->right();
@@ -264,3 +228,44 @@ void Board::clear() {
 }
 
 void Board::initfs(string filename) {}
+
+void Board::printLevelLine() {
+    cout << "Level:" << setw(5) << level;
+}
+
+void Board::printScoreLine() {
+    cout << "Score:" << setw(5) << score;
+}
+
+void Board::printRows(int i) {
+    for (int j = 0; j < 11; j++) {
+        cout << cells.at(i).at(j).get()->getType();
+    }
+}
+
+void Board::printBoard() {
+    int rows  = cells.size();
+    int cols = cells.at(0).size();
+    cout << "Level:" << setw(5) << level << endl;
+    cout << "Score:" << setw(5) << score << endl;
+    for (int i = 0; i < 11; i++) {
+        cout << '_';
+    }
+    cout << endl;
+
+    for (int i = 0; i < 18; i++) {
+        for (int j = 0; j < 11; j++) {
+            cout << cells.at(i).at(j).get()->getType();
+        }
+        cout << endl;
+    }
+
+    for (int i = 0; i < 11; i++) {
+        cout << '_';
+    }
+    cout << endl;
+    cout << "Next:" << endl;
+
+    printNextBlock('Z'); // not right
+
+}

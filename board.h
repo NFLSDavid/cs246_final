@@ -22,6 +22,8 @@ class Board: public abc_board {
     int score;          //可能要改改
     bool checkfull(int row_num);
 
+    // helpers to print board
+    
     public:
     vector <vector <shared_ptr<Cell>>> cells;
 
@@ -30,7 +32,6 @@ class Board: public abc_board {
     void popCurrBlock() override;
     void pushCurrBlock(shared_ptr<Block> b) override;
     void changeCurrBlock(char type) override;
-    void update() override;
     shared_ptr<Block> produceBlock(char) override;
     void newBlock() override;
     void printNextBlock(char) override;
@@ -54,6 +55,14 @@ class Board: public abc_board {
     void initfs(string filename) override;
     void setNextType() override;
     void clearNextDisplay() override;
+
+    void printLevelLine();
+    void printScoreLine();
+    void printRows(int);
+
+    char getNextType() override;
+    vector<shared_ptr<Block>> * getActiveBlocks() override;
+    int getLevel() override;
     ~Board();
 };
 

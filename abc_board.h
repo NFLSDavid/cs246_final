@@ -2,6 +2,7 @@
 #define _ABC_BOARD_H_
 
 #include <memory>
+#include <vector>
 #include "block.h"
 using namespace std;
 class Cell;
@@ -13,7 +14,6 @@ class abc_board {
     virtual void popCurrBlock() = 0;
     virtual void pushCurrBlock(shared_ptr<Block> b) = 0;
     virtual void changeCurrBlock(char type) = 0;
-    virtual void update() = 0;
     virtual void newBlock() = 0;
     virtual void printNextBlock(char) = 0;
     virtual void initAllCells() = 0;
@@ -37,7 +37,14 @@ class abc_board {
     virtual void initfs(string filename) = 0;
     virtual void setNextType() = 0;
     virtual void clearNextDisplay() = 0;
-    ~abc_board();
+
+    virtual void printLevelLine() = 0;
+    virtual void printScoreLine() = 0;
+    virtual void printRows(int) = 0;
+    virtual int getLevel() = 0;
+    virtual char getNextType() = 0;
+    virtual vector<shared_ptr<Block>> * getActiveBlocks() = 0;
+    virtual ~abc_board();
 };
 
 #endif

@@ -125,7 +125,7 @@ void Block::right() {
     setFalse();
     moveRight();
     valid = checkValidMove();
-    cout << valid << endl;
+    //cout << valid << endl;
     if (valid == false) {
         moveLeft();
         valid = true;
