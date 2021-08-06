@@ -1,12 +1,19 @@
 #include "level1.h"
 #include <cstdlib>
+#include <iostream>
+Level1::Level1(abc_board *c) : Level{c} {}
 
-void Level1::newBlock() {
-    char c = component->getNextType();
+int Level1::getLevel() const {
+    return 1;
+}
+
+bool Level1::newBlock() {
+    char c = getNextType();
     auto b = produceBlock(c);
-    component->pushActiveBlocks(b);
-    b->initBlock(0, 3);
+    pushActiveBlocks(b);
+    bool successful = b->initBlock(0, 3);
     setNextType();
+    return successful;
 }
 
 void Level1::setNextType() {
@@ -31,3 +38,5 @@ void Level1::setNextType() {
     component->clearNextDisplay();
     b->initBlock(0, 21);
 }
+
+void Level1::judge(int) {}

@@ -1,19 +1,27 @@
 #include "level0.h"
 
+Level0::Level0(abc_board *c) : Level{c} {}
+
+int Level0::getLevel() const {
+    return 0;
+}
+
 void Level0::setNextType() {
-    setNext(component->getGeneratedFront());
-    component->popGenerated();
-    auto b = component->produceBlock(component->getNextType());
-    component->clearNextDisplay();
+    setNext(getGeneratedFront());
+    popGenerated();
+    auto b = produceBlock(getNextType());
+    clearNextDisplay();
     b->initBlock(0, 21);
 }
 
-void Level0::newBlock() {
-    component->pushBackToGenerated(component->getNextType());
+bool Level0::newBlock() {
+    pushBackToGenerated(getNextType());
     //toBeGenerated.push(nextBlockType);
-    auto b = component->produceBlock(component->getNextType());
-    component->pushActiveBlocks(b);
-    b->initBlock(0, 3);
+    auto b = produceBlock(getNextType());
+    pushActiveBlocks(b);
+    bool s = b->initBlock(0, 3);
     setNextType();
+    return s;
 }
 
+void Level0::judge(int) {}

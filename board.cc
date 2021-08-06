@@ -12,7 +12,7 @@
 
 using namespace std;
 
-Board::Board(string filename) : filename{filename}, level{0}, score{0} {
+Board::Board(string filename) : filename{filename}, level{0}, currentScore{0} {
     std::ifstream infile{filename};
     char blockType;
     while ( true ) {
@@ -29,10 +29,33 @@ Board::~Board() {}
     return active_blocks;
 }*/
 
+void Board::judge(int) {}
+
+int Board::getHiScore() const {
+    return hiScore;
+}
+
+int Board::getCurrentScore() const {
+    return currentScore;
+}
+
+void Board::setHiScore() {
+    if (currentScore > hiScore) {
+        hiScore = currentScore;
+    }
+}
+
+void Board::setCurrentScore(int s) {
+    currentScore = s;
+}
+
+vector <vector <shared_ptr<Cell>>> Board::getBoard() const {
+    return cells;
+}
+
 char Board::getGeneratedFront() const {
     return toBeGenerated.front();
 }
-
 
 void Board::pushActiveBlocks(shared_ptr<Block> b) {
     active_blocks.push_back(b);
@@ -49,9 +72,6 @@ void Board::popGenerated() {
 void Board::setNext(char c) {
     nextBlockType = c;
 } 
-
-
-
 
 char Board::getNextType() const {
     return nextBlockType;
@@ -105,18 +125,19 @@ void Board::changeCurrBlock(char type) {
 shared_ptr<Block> Board::produceBlock(char c) {
     shared_ptr<Block> b;
     if (c == 'Z' || c == 'S') {
-        b = make_shared<szblock>(this, c);
+        b = make_shared<szblock>(this, getLevel(), c);
     } else if (c == 'I') {
-        b = make_shared<iblock>(this, c);
+        b = make_shared<iblock>(this, getLevel(), c);
     } else if (c == 'J') {
-        b = make_shared<jblock>(this, c);
+        b = make_shared<jblock>(this, getLevel(), c);
     } else if (c == 'L') {
-        b = make_shared<lblock>(this, c);
+        b = make_shared<lblock>(this, getLevel(), c);
     } else if (c == 'O') {
-        b = make_shared<oblock>(this, c);
+        b = make_shared<oblock>(this, getLevel(), c);
     }  else {
-        b = make_shared<tblock>(this, c);
+        b = make_shared<tblock>(this, getLevel(), c);
     }
+    cout << "Block is generated at Level: " << getLevel() << endl;
     return b;
 }
 
@@ -170,6 +191,9 @@ void Board::restart() {
             cells.at(i).at(j).get()->turnOff();
         }
     }
+
+    setHiScore();
+    currentScore = 0;
 }
 
 void Board::printNextBlock(char c) {
@@ -206,7 +230,6 @@ void Board::curC() {
 
 void Board::curDrop() {
     active_blocks.back()->drop();
-    clear();
 }
 
 void Board::print() {}
@@ -222,18 +245,43 @@ bool Board::checkfull(int row_num) {
     return true;
 }
 
-void Board::clear() {
-    vector <int> fullRows;
-    int num = 0;
+
+/*
+when a line (or multiple lines) is cleared, you score points equal to (your current level, plus
+number of lines) squared. (For example, clearing a line in level 2 is worth 9 points.) 
+
+In addition, when a block is completely
+removed from the screen (i.e., when all of its cells have disappeared) you score points equal to the level you were in when the
+block was generated, plus one, squared. (For example if you got an O-block while on level 0, and cleared the O-block in level
+3, you get 1 point.)
+*/
+
+/*int Board::getLinesCleared() {
+    int numLines = 0;
     for (int i = 0; i < 18; ++i) {
         if (checkfull(i)) {
-            ++num;
+            ++numLines; // how many rows you have cleared
+        }
+    }
+    return numLines;
+}*/
+
+
+
+// update linesCleared
+int Board::clear() {
+    vector <int> fullRows;
+    int numLines = 0;
+    for (int i = 0; i < 18; ++i) {
+        if (checkfull(i)) {
+            ++numLines; // how many rows you have cleared
             fullRows.emplace_back(i);
         }
     }
-    if (num == 0) {
-        return;
+    if (numLines == 0) {
+        return 0;
     }
+    currentScore += (getLevel() + numLines) * (getLevel() + numLines);
     int len1 = fullRows.size();  // 可以消掉的rows （16， 17）
     int len2 = active_blocks.size();
 
@@ -248,8 +296,10 @@ void Board::clear() {
                 cells.at(j).at(k)->setState(upOccupied);
             }
         }
+
         for (int t = 0; t < len2; ++t) {
             if (!active_blocks.at(t)->dropRow(rowNum)) {
+                currentScore += (active_blocks.at(t)->getLevel() + 1) * (active_blocks.at(t)->getLevel() + 1);
                 active_blocks.erase(active_blocks.begin() + t);
             }
         }
@@ -258,16 +308,23 @@ void Board::clear() {
             cells.at(0).at(k).get()->setType(' ');
         }
     }
+
+    return numLines;
 }
+
+
+
+
+
 
 void Board::initfs(string filename) {}
 
 void Board::printLevelLine() {
-    cout << "Level:" << setw(5) << level;
+    cout << "Level:" << setw(5) << getLevel();
 }
 
 void Board::printScoreLine() {
-    cout << "Score:" << setw(5) << score;
+    cout << "Score:" << setw(5) << currentScore;
 }
 
 void Board::printRows(int i) {
@@ -277,10 +334,10 @@ void Board::printRows(int i) {
 }
 
 void Board::printBoard() {
-    int rows  = cells.size();
-    int cols = cells.at(0).size();
+    //int rows  = cells.size();
+    //int cols = cells.at(0).size();
     cout << "Level:" << setw(5) << level << endl;
-    cout << "Score:" << setw(5) << score << endl;
+    cout << "Score:" << setw(5) << currentScore << endl;
     for (int i = 0; i < 11; i++) {
         cout << '_';
     }

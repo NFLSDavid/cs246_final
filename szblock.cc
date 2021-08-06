@@ -1,7 +1,7 @@
 #include "szblock.h"
 using namespace std;
 
-szblock::szblock(Board *b, int level, char type) : Block{b, level, type} {}
+szblock::szblock(abc_board *b, int level, char type) : Block{b, level, type} {}
 
 bool szblock::initBlock(int x, int y) {
     // x = 0, y = 3

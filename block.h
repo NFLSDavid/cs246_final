@@ -8,20 +8,21 @@ using namespace std;
 
 typedef pair<int, int> point;
 
-class Board;
+class abc_board;
 
 class Block {
     private:
-    Board *b;
+    abc_board *b;
     int level; 
     int activeNum;
+    
     void moveLeft();
     void moveRight();
     void moveUp();
     void moveDown();
     
     public:
-    Block(Board *b, int level, char type);
+    Block(abc_board *b, int level, char type);
 
     // if we failed to init a new block, then we return false; and that could tell the game
     // to end; if true, then we successfully created a block

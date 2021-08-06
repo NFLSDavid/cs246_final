@@ -6,7 +6,7 @@ using namespace std;
 
 class lblock : public Block {
     public:
-    lblock(Board *b, int level, char type);
+    lblock(abc_board *b, int level, char type);
     bool initBlock(int x, int y) override;
     //void initNextBlock() override;
     void clockwise() override;

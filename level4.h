@@ -14,22 +14,20 @@ class Cell;
 class Block;
 
 class Level4: public Level {
-    public:
-        void newBlock() override;
-        void setNextType() override;
-        void curRight() override;
-        void curLeft() override;
-        void curDown() override;
-        void curCC() override;
-        void curC() override;
-        ~Level4();
-    
     private:
-        int countNotCleared;  //如果%5 = 0 且不等于0, 就drop (在每次drop函数的时候check并unpdate)
-
+        bool clearedMinimum = false; // if cleared at least one row, true
+        bool random = true;
+        string filename4;
+        queue <char> toBeGenerated4;
+    public:
+        void init4(string name);
+        int getLevel() const override;
+        Level4(abc_board *c);
+        bool newBlock() override;
+        void setNextType() override;
+        int countNotCleared = 0;  //如果%5 = 0 且不等于0, 就drop (在每次drop函数的时候check并unpdate)
         bool dropStar(); // if dropped successfully, return true
-        void heavyOne(); //看一下.cc file就懂了，只有当block level为3,4时，我们才往下一格
-    
+        void judge(int rowsCleared);
 };
 
 #endif

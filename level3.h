@@ -14,17 +14,17 @@ class Cell;
 class Block;
 
 class Level3: public Level {
+    private:
+        bool random = true;
+        string filename3;
+        queue <char> toBeGenerated3;
     public:
+        void init3(string name);
+        Level3(abc_board *c);
+        int getLevel() const override;
         bool newBlock() override;
         void setNextType() override;
-        void curRight() override;
-        void curLeft() override;
-        void curDown() override;
-        void curCC() override;
-        void curC() override;
-        ~Level3();
-    private:
-        void heavyOne();
+        void judge(int) override;
 };
 
 #endif

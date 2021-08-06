@@ -1,13 +1,19 @@
 #include "level2.h"
 #include <cstdlib>
 
-void Level2::newBlock() {
-    char c = component->getNextType();
+Level2::Level2(abc_board *c) : Level{c} {}
+
+int Level2::getLevel() const {
+    return 2;
+}
+
+bool Level2::newBlock() {
+    char c = getNextType();
     auto b = produceBlock(c);
-    auto v = component->getActiveBlocks();
-    v.push_back(b);
-    b->initBlock(0, 3);
+    pushActiveBlocks(b);
+    bool successful = b->initBlock(0, 3);
     setNextType();
+    return successful;
 }
 
 void Level2::setNextType() {
@@ -28,7 +34,9 @@ void Level2::setNextType() {
     } else if (i == 6) {
         c = 'T';
     } 
-    auto b = component->produceBlock(c);
-    component->clearNextDisplay();
+    auto b = produceBlock(c);
+    clearNextDisplay();
     b->initBlock(0, 21);
 }
+
+void Level2::judge(int) {}

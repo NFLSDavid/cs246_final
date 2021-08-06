@@ -18,8 +18,12 @@ class Board: public abc_board {
     queue <char> toBeGenerated;
     vector <shared_ptr<Block>> active_blocks;
     
+    
     int level;
-    int score;          //可能要改改
+    int currentScore;          //可能要改改
+    int hiScore;               // 在call restart的时候，我会compare currentScore和hiScore, 然后把
+                               // 更高的score存在hiScore里
+
     bool checkfull(int row_num);
 
     // helpers to print board
@@ -34,17 +38,23 @@ class Board: public abc_board {
     char getGeneratedFront() const override;
     int getLevel() const override;
     char getNextType() const override;
+    int getHiScore() const override;
+    int getCurrentScore() const override;
+    vector <vector <shared_ptr<Cell>>> getBoard() const override;
 
     //mutators
-    void pushActiveBlocks(shared_ptr<Block> b) override; 
+    void pushActiveBlocks(shared_ptr<Block> b) override;
     void pushBackToGenerated(char) override; 
     void popGenerated() override; 
     void setNext(char) override; // directly set nextBlockType
+    void setCurrentScore(int) override;
+    void setHiScore() override;
 
     // methods on the board:
     void initAllCells() override;
     void restart() override;
-    void clear() override;
+    int clear() override;
+    void judge(int) override;
     void initfs(string filename) override;
     void print() override;
     /*void force();

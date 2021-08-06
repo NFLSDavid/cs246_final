@@ -15,17 +15,23 @@ class abc_board {
     virtual char getGeneratedFront() const = 0;
     virtual int getLevel() const = 0;
     virtual char getNextType() const = 0;
+    virtual int getHiScore() const = 0;
+    virtual int getCurrentScore() const = 0;
+    virtual vector <vector <shared_ptr<Cell>>> getBoard() const = 0;
 
     //mutators
     virtual void pushActiveBlocks(shared_ptr<Block> b) = 0; 
     virtual void pushBackToGenerated(char) = 0; 
     virtual void popGenerated() = 0; 
     virtual void setNext(char) = 0; // directly set nextBlockType
+    virtual void setCurrentScore(int) = 0;
+    virtual void setHiScore() = 0;
 
     // methods on the board:
     virtual void initAllCells() = 0;
     virtual void restart() = 0;
-    virtual void clear() = 0;
+    virtual int clear() = 0;
+    virtual void judge(int) = 0;
     virtual void initfs(string filename) = 0;
     virtual void print() = 0;
     /*virtual void force();

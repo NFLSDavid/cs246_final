@@ -5,6 +5,12 @@
 #include "tblock.h"
 #include "oblock.h"
 #include "jblock.h"
+#include "level.h"
+#include "level0.h"
+#include "level1.h"
+#include "level2.h"
+#include "level3.h"
+#include "level4.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -25,7 +31,7 @@ void printDivider() {
     cout << endl;
 }
 
-void printGameBoard(Board *b1, Board *b2) {
+void printGameBoard(abc_board *b1, abc_board *b2) {
     b1->printLevelLine();
     printRiver();
     b2->printLevelLine();
@@ -35,9 +41,12 @@ void printGameBoard(Board *b1, Board *b2) {
     printRiver();
     b2->printScoreLine();
     cout << endl;
-
+    cout << "so far so good";
     printDivider();
 
+    // so far so good
+
+    
     for (int i = 0; i < 18; i++) {
         for (int j = 0; j < 2; j++) {
             if (j == 0) {
@@ -78,14 +87,29 @@ random sequence every time you run the program. It’s good for testing, but not
 • -scriptfile2 xxx Uses xxx instead of sequence2.txt as a source of blocks for level 0, for player 2.
 • -startlevel n Starts the game in level n. The game starts in level 0 if this option is not supplied.
 */
-bool processArgs(int argc, char** argv, std::string* flagStr, bool* flags, istream** infile, ostream** outfile) {
+/*
+bool processArgs(int argc, char** argv) {
     //int count = 0;
+    if (argc > 3) {
+        cout << "Invalid Command" << endl;
+    }
+
+    if (argc == 2) {
+        std::string curr = argv[1];
+        if (curr == "-text") {
+             // do not show graphical display
+        } else {
+            cout << "Invalid Command" << endl;
+        }
+    }
+
+    // argc == 3
     for (int i = 1; i < argc; i++) {
         std::string curr = argv[i];
-        if (curr == "-text") {
-            // do not show graphical display
-        } else if (curr == "-seed") {
-            std::string seed = argv[i + 1];
+        if (curr == "-seed") {
+            istringstream s{argv[i + 1]};
+            int seed;
+            s >> seed;
             // set seed
         } else if (curr == "-scriptfile1") {
             std::string filename = argv[i + 1];
@@ -95,8 +119,9 @@ bool processArgs(int argc, char** argv, std::string* flagStr, bool* flags, istre
             std::string filename = argv[i + 1];
             
         } else if (curr == "-startlevel") {
-            std::stringstream slevel = argv[i + 1];
-            
+            istringstream s{argv[i + 1]};
+            int startlevel;
+            s >> startlevel;    
         }
         if ( curr[0] == '-') {
             if (curr[1] == 'c') {
@@ -123,11 +148,73 @@ bool processArgs(int argc, char** argv, std::string* flagStr, bool* flags, istre
     }
 
     return true;
+}*/
+
+
+shared_ptr<abc_board> changeLevel(bool up, shared_ptr<abc_board> b) {
+    if (up) {
+        if (b->getLevel() == 0) {
+            
+            b = make_shared<Level1>(b.get());  // b.get() abc_board *
+        } else if (b->getLevel() == 1) {
+            b = make_shared<Level2>(b.get());
+        } else if (b->getLevel() == 2) {
+            b = make_shared<Level3>(b.get());
+        } else if (b->getLevel() == 3) {
+            b = make_shared<Level4>(b.get());
+        }
+        return b;
+    } else {
+        if (b->getLevel() == 1) {
+            b = make_shared<Level0>(b.get());
+        } else if (b->getLevel() == 2) {
+            b = make_shared<Level1>(b.get());
+        } else if (b->getLevel() == 3) {
+            b = make_shared<Level2>(b.get());
+        } else if (b->getLevel() == 4) {
+            b = make_shared<Level3>(b.get());
+        } 
+        return b;
+    }
 }
+
+void changeLevel(bool up, abc_board** b) {
+    if (up) {
+        if ((*b)->getLevel() == 0) {
+            
+            *b = new Level1(*b);  // b.get() abc_board *
+        } else if ((*b)->getLevel() == 1) {
+            *b = new Level2(*b);
+        } else if ((*b)->getLevel() == 2) {
+            *b = new Level3(*b);
+        } else if ((*b)->getLevel() == 3) {
+            *b = new Level4(*b);
+        }
+        return;
+    } /*else {
+        if (b->getLevel() == 1) {
+            b = make_shared<Level0>(b.get());
+        } else if (b->getLevel() == 2) {
+            b = make_shared<Level1>(b.get());
+        } else if (b->getLevel() == 3) {
+            b = make_shared<Level2>(b.get());
+        } else if (b->getLevel() == 4) {
+            b = make_shared<Level3>(b.get());
+        } 
+        return b;
+    }*/
+}
+
+
+
 int main(int argc, char* argv[]) {
     //shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
-    shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
-    shared_ptr<Board> b2 = make_shared<Board>("biquadris_sequence2.txt");
+    //istringstream filePlayer1 
+    /*shared_ptr<abc_board> b1 = make_shared<Board>("biquadris_sequence1.txt");
+    shared_ptr<abc_board> b2 = make_shared<Board>("biquadris_sequence2.txt");*/
+
+    abc_board *b1 = new Board{"biquadris_sequence1.txt"};
+    abc_board *b2 = new Board{"biquadris_sequence2.txt"};
     b1->initAllCells();
     b2->initAllCells();
     b1->setNextType();
@@ -137,7 +224,7 @@ int main(int argc, char* argv[]) {
 
     //printGameBoard(b1.get(), b2.get());
     bool continueGame = true;
-    shared_ptr<Board> player;
+    abc_board* player;
     string cmd;
     while (continueGame) {
         for (int i = 0; i < 2; i++) {
@@ -149,8 +236,8 @@ int main(int argc, char* argv[]) {
                     continueGame = false;
                     break;
                 } // have a new block
-
-                printGameBoard(b1.get(), b2.get());
+        
+                printGameBoard(b1, b2);
                 
             } else {
                 player = b2;
@@ -159,7 +246,7 @@ int main(int argc, char* argv[]) {
                     continueGame = false;
                     break;
                 }
-                printGameBoard(b1.get(), b2.get());
+                printGameBoard(b1, b2);
             }
 
             while (true) {
@@ -191,12 +278,15 @@ int main(int argc, char* argv[]) {
                     player->changeCurrBlock('O');
                 } else if (cmd == "drop") {
                     player->curDrop();
+                    int linesCleared = player->clear();
+                    player->judge(linesCleared);
                     //player->update();
                     break;
                 } else if (cmd == "levelup") {
-                    
+                    //player = new Level1(player);
+                    changeLevel(true, &player);
                 } else if (cmd == "leveldown") {
-                    
+                    //player = changeLevel(false, player);
                 }
 
                 else if (cmd == "random") {
@@ -206,7 +296,13 @@ int main(int argc, char* argv[]) {
                     cin >> filename;
                     b1->initfs(filename);
                 }
-                printGameBoard(b1.get(), b2.get());
+
+                if (i == 0) {
+                    b1 = player;
+                } else {
+                    b2 = player;
+                }
+                printGameBoard(b1, b2);
             } 
         }
     }

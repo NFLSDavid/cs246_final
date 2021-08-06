@@ -15,8 +15,11 @@ class Block;
 
 class Level1: public Level {
     public:
-        void newBlock() override;
+        Level1(abc_board *c);
+        int getLevel() const override;
+        bool newBlock() override;
         void setNextType() override;
+        void judge(int) override;
 };
 
 #endif

@@ -6,14 +6,14 @@ using namespace std;
 
 Block::~Block() {}
 
-Block::Block(Board *b, int level, char type): b{b}, level{level}, type{type}, activeNum{4} {}
+Block::Block(abc_board *b, int level, char type): b{b}, level{level}, activeNum{4}, type{type} {}
 
 void Block::initNextBlock() {
     int len = p_array.size();
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;
-        this->b->cells.at(y).at(x).get()->setType(type);
+        this->b->getBoard().at(y).at(x).get()->setType(type);
     }
 }
 
@@ -27,8 +27,8 @@ void Block::setFalse() {
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;
-        this->b->cells.at(y).at(x).get()->setState(false);
-        this->b->cells.at(y).at(x).get()->setType(' ');
+        this->b->getBoard().at(y).at(x).get()->setState(false);
+        this->b->getBoard().at(y).at(x).get()->setType(' ');
     }
 }
 
@@ -37,8 +37,8 @@ void Block::setTrue() {
     for (int i = 0; i < len; ++i) {
         int x = p_array.at(i).first;
         int y = p_array.at(i).second;
-        this->b->cells.at(y).at(x).get()->setState(true);
-        this->b->cells.at(y).at(x).get()->setType(type);
+        this->b->getBoard().at(y).at(x).get()->setState(true);
+        this->b->getBoard().at(y).at(x).get()->setType(type);
     }
 }
 
@@ -60,7 +60,7 @@ bool Block::checkValidMove() {
             return false;
         }
 
-        Cell *c = this->b->cells.at(y).at(x).get();
+        Cell *c = this->b->getBoard().at(y).at(x).get();
         if (c->getState() == true) {  // whether it collides with other already occupied cells
             return false;
         }
@@ -156,6 +156,8 @@ shared_ptr<point> Block::getLeftCorner() {
 }
 
 
+
+// return true if the block is fully cleared
 bool Block::dropRow(int r) {
     int len = p_array.size();
     for (int i = 0; i < len; ++i) {

@@ -6,7 +6,7 @@ using namespace std;
 
 class szblock : public Block {
     public:
-    szblock(Board *b, int level, char type);
+    szblock(abc_board *b, int level, char type);
     bool initBlock(int x, int y) override;
     //void initNextBlock() override;
     void clockwise() override;
