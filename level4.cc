@@ -27,18 +27,24 @@ void Level4::init4(string name) {
 
 // once newBlock return false, game ends
 bool Level4::newBlock() {
+    cout << "entered Level4's newBlock" << endl;
     shared_ptr<Block> b;
     if (random) {
         char c = getNextType();
         b = produceBlock(c);
+        cout << c << "type" << endl;
     } else {
         toBeGenerated4.push(getNextType());
         b = produceBlock(getNextType());
     }
-    pushActiveBlocks(b);
+    
+
     bool successful = b->initBlock(0, 3);
     setNextType();
     if (successful) {
+        cout << "successfully created" << endl;
+        pushActiveBlocks(b);
+
         if (countNotCleared == 5) {
             countNotCleared = 1;
             if (!clearedMinimum) { // ckearedMinimum 本来就是false, 不用再set false了
@@ -57,6 +63,7 @@ bool Level4::newBlock() {
             return true;    // block inited successfully and cleared at least one row
         }
     } else {
+        cout << "failed to new" << endl;
         return false;
     }
 }
@@ -87,6 +94,7 @@ void Level4::setNextType() {
     auto b = produceBlock(c);
     clearNextDisplay();
     b->initBlock(0, 21);
+    setNext(c);
 }
 
 bool Level4::dropStar() {

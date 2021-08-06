@@ -37,6 +37,7 @@ void Level2::setNextType() {
     auto b = produceBlock(c);
     clearNextDisplay();
     b->initBlock(0, 21);
+    setNext(c);
 }
 
 void Level2::judge(int) {}

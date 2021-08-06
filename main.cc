@@ -41,7 +41,6 @@ void printGameBoard(abc_board *b1, abc_board *b2) {
     printRiver();
     b2->printScoreLine();
     cout << endl;
-    cout << "so far so good";
     printDivider();
 
     // so far so good
@@ -215,10 +214,12 @@ int main(int argc, char* argv[]) {
 
     abc_board *b1 = new Board{"biquadris_sequence1.txt"};
     abc_board *b2 = new Board{"biquadris_sequence2.txt"};
+    b1 = new Level4(b1);
     b1->initAllCells();
     b2->initAllCells();
     b1->setNextType();
     b2->setNextType();
+    //cout << b1->getNextType();
     //b1->update();
     //cout << "Player1 Go" << endl;
 
@@ -233,6 +234,7 @@ int main(int argc, char* argv[]) {
                 cout << "Player1 Go" << endl;
                 
                 if (!player->newBlock()) {
+                    cout << "called";
                     continueGame = false;
                     break;
                 } // have a new block

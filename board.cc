@@ -172,11 +172,15 @@ void Board::setNextType() {
 bool Board::newBlock() {
     toBeGenerated.push(nextBlockType);
     auto b = produceBlock(nextBlockType);
-    active_blocks.push_back(b);
     bool successful = b->initBlock(0, 3);
-    setNextType();
+    if (successful) {
+        active_blocks.push_back(b);
+        setNextType();
+    } 
+    
     return successful;
 }
+
 
 /*void Board::nextBlock() {
     char blockType = toBeGenerated.front();

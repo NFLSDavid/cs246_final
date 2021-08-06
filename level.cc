@@ -55,6 +55,7 @@ char Level::getGeneratedFront() const {
 }
 
 char Level::getNextType() const {
+    cout << "entered level's nexttype" << endl;
     return component->getNextType();
 }
 
