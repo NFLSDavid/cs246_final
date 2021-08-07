@@ -138,16 +138,19 @@ void Block::drop() {
     valid = true;
 }
 
-void Block::down() {
+bool Block::down() {
+    bool s = true;
     setFalse();
     moveDown();
     valid = checkValidMove();
     if (valid == false) {
         moveUp();
         valid = true;
+        s = false;
     } 
     setTrue();
     p.second += 1;
+    return s;
 }
 
 shared_ptr<point> Block::getLeftCorner() {

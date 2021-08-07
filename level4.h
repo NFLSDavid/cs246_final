@@ -27,7 +27,7 @@ class Level4: public Level {
         void setNextType() override;
         int countNotCleared = 0;  //如果%5 = 0 且不等于0, 就drop (在每次drop函数的时候check并unpdate)
         bool dropStar(); // if dropped successfully, return true
-        void judge(int rowsCleared);
+        void judge(int rowsCleared) override;
 };
 
 #endif

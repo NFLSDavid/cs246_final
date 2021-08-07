@@ -3,6 +3,7 @@
 
 class Cell {
     int x, y;   // x, y (0,0)
+    bool isBlinded;
     bool occupied;
     char type;
 
@@ -20,11 +21,14 @@ class Cell {
     void turnOn();
     bool getState();
     void setState(bool);
+    
+    void blind();
+    void unblind();
 
     void draw();
     void undraw();
 
-    void print();
+    void print();  // print 
     
 };
 

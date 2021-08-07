@@ -69,14 +69,16 @@ void Level::heavyOne() {
     }
 }
 
-void Level::curRight() {
+bool Level::curRight() {
     getCurrBlock()->right();
     heavyOne();
+    return true;
 }
 
-void Level::curLeft() {
+bool Level::curLeft() {
     getCurrBlock()->left();
     heavyOne();
+    return true;
 }
 
 void Level::curDown() {

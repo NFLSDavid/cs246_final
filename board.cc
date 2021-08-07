@@ -212,12 +212,14 @@ void Board::printNextBlock(char c) {
     }
 }
 
-void Board::curRight() {
+bool Board::curRight() {
     active_blocks.back()->right();
+    return true;
 }
 
-void Board::curLeft()  {
+bool Board::curLeft()  {
     active_blocks.back()->left();
+    return true;
 }
 
 void Board::curDown() {
@@ -305,6 +307,7 @@ int Board::clear() {
             if (!active_blocks.at(t)->dropRow(rowNum)) {
                 currentScore += (active_blocks.at(t)->getLevel() + 1) * (active_blocks.at(t)->getLevel() + 1);
                 active_blocks.erase(active_blocks.begin() + t);
+                t--;
             }
         }
         for (int k = 0; k < 11; ++k) {
@@ -333,7 +336,8 @@ void Board::printScoreLine() {
 
 void Board::printRows(int i) {
     for (int j = 0; j < 11; j++) {
-        cout << cells.at(i).at(j).get()->getType();
+        //cout << cells.at(i).at(j).get()->getType();
+        cells.at(i).at(j)->print();
     }
 }
 

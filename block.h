@@ -32,7 +32,7 @@ class Block {
     virtual void counterclockwise() = 0;
     void left();
     void right();
-    void down();
+    bool down();
     void drop();
     bool dropRow(int);
 

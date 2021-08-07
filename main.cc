@@ -11,6 +11,8 @@
 #include "level2.h"
 #include "level3.h"
 #include "level4.h"
+#include "heavy.h"
+#include "blind.h"
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -205,6 +207,24 @@ void changeLevel(bool up, abc_board** b) {
 }
 
 
+void changeCurrentBlock(abc_board** player, string cmd) {
+   if (cmd == "I") {
+        (*player)->changeCurrBlock('I');
+    } else if (cmd == "J") {
+        (*player)->changeCurrBlock('J');
+    } else if (cmd == "T") {
+        (*player)->changeCurrBlock('T');
+    } else if (cmd == "L") {
+        (*player)->changeCurrBlock('L');
+    } else if (cmd == "S") {
+        (*player)->changeCurrBlock('S');
+    } else if (cmd == "Z") {
+        (*player)->changeCurrBlock('Z');
+    } else if (cmd == "O") {
+        (*player)->changeCurrBlock('O');
+    } 
+}
+
 
 int main(int argc, char* argv[]) {
     //shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
@@ -212,9 +232,8 @@ int main(int argc, char* argv[]) {
     /*shared_ptr<abc_board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     shared_ptr<abc_board> b2 = make_shared<Board>("biquadris_sequence2.txt");*/
 
-    abc_board *b1 = new Board{"biquadris_sequence1.txt"};
+    abc_board *b1 = new Board{"allO.txt"};
     abc_board *b2 = new Board{"biquadris_sequence2.txt"};
-    b1 = new Level4(b1);
     b1->initAllCells();
     b2->initAllCells();
     b1->setNextType();
@@ -255,16 +274,34 @@ int main(int argc, char* argv[]) {
                 cin >> cmd;
 
                 if (cmd == "right") {
-                    player->curRight();               
+                    bool successful = player->curRight();
+                    if (!successful) {
+                        int linesCleared = player->clear();
+                        player->judge(linesCleared);
+                        break;
+                    }               
                 } else if (cmd == "left") {
-                    player->curLeft();
+                    bool successful = player->curLeft();
+                    // if 能往下(true)，nothing happens
+                    // if not
+                    if (!successful) {
+                        int linesCleared = player->clear();
+                        player->judge(linesCleared);
+                        break;
+                    }
+
                 } else if (cmd == "down") {
                     player->curDown();
                 } else if (cmd == "counterclockwise") {
                     player->curCC();
                 } else if (cmd == "clockwise") {
                     player->curC();
-                } else if (cmd == "I") {
+                } else if (cmd == "I" || cmd == "J" || cmd == "T" || cmd == "L" ||  
+                cmd == "S" ||cmd == "Z" || cmd == "O") {
+                    changeCurrentBlock(&player, cmd);
+                            
+                }
+                /*else if (cmd == "I") {
                     player->changeCurrBlock('I');
                 } else if (cmd == "J") {
                     player->changeCurrBlock('J');
@@ -278,11 +315,43 @@ int main(int argc, char* argv[]) {
                     player->changeCurrBlock('Z');
                 } else if (cmd == "O") {
                     player->changeCurrBlock('O');
-                } else if (cmd == "drop") {
+                } */else if (cmd == "drop") {
                     player->curDrop();
                     int linesCleared = player->clear();
                     player->judge(linesCleared);
                     //player->update();
+
+                    // print一下
+                    printGameBoard(b1, b2);
+
+                    
+                    if (linesCleared >= 2) {
+                        cout << "Enter the negative influence you want to impose on the opponent's board: ";
+                        string inf;
+                        cin >> inf;
+
+                        if (inf == "heavy") {
+                            if (i == 0) {
+                                b2 = new Heavy(b2);
+                            } else {
+                                b1 = new Heavy(b1);
+                            }
+                        } else if (inf == "blind") {
+                            if (i == 0) {
+                                b2 = new Blind(b2);
+                            } else {
+                                b1 = new Blind(b1);
+                            }
+                        } else if (inf == "force") {
+                            string changed;
+                            cin >> changed;
+                            if (i == 0) {
+                                changeCurrentBlock(&b2, changed);
+                            } else {
+                                changeCurrentBlock(&b1, changed);
+                            }    
+                        }
+                    }
                     break;
                 } else if (cmd == "levelup") {
                     //player = new Level1(player);
@@ -306,6 +375,12 @@ int main(int argc, char* argv[]) {
                 }
                 printGameBoard(b1, b2);
             } 
+            if (i == 0) {
+                b1 = player;
+            } else {
+                b2 = player;
+            }
+            printGameBoard(b1, b2);
         }
     }
 }

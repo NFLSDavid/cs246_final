@@ -23,7 +23,6 @@ class Board: public abc_board {
     int currentScore;          //可能要改改
     int hiScore;               // 在call restart的时候，我会compare currentScore和hiScore, 然后把
                                // 更高的score存在hiScore里
-
     bool checkfull(int row_num);
 
     // helpers to print board
@@ -72,8 +71,8 @@ class Board: public abc_board {
     void clearNextDisplay() override;
 
     // methods to move blocks:
-    void curRight() override;
-    void curLeft() override;
+    bool curRight() override;
+    bool curLeft() override;
     void curDown() override;
     void curCC() override;
     void curC() override;

@@ -1,7 +1,8 @@
 #include "cell.h"
 #include <iostream>
+using namespace std;
 
-Cell::Cell(int x, int y, char type): x{x}, y{y}, occupied{false}, type{type} {}
+Cell::Cell(int x, int y, char type): x{x}, y{y}, isBlinded(false), occupied{false}, type{type} {}
 
 int Cell::getX() {
     return x;
@@ -44,24 +45,34 @@ void Cell::turnOn() {
     occupied = true;
 }
 
+void Cell::unblind() {
+    isBlinded = false;
+}
+
+void Cell::blind() {
+    isBlinded = true;
+}
+
 void Cell::draw() {
 
 }
+
 void Cell::undraw() {
 
 }
 
 void Cell::print() {
-    std::cout << type;
+    if (!isBlinded) {
+        cout << type;
+    } else {
+        cout << '?';
+    }
     // the newline character will be added in the actual loop in the Board class
 }
 
-
 /*
 Cell::Cell(const Cell & other) : x{other.x}, y{other.y}, occupied{other.occupied}, type{other.type} {}
-
 Cell::Cell(Cell &&other) : x{other.x}, y{other.y}, occupied{other.occupied}, type{other.type} {}
-
 Cell & Cell::operator=(const Cell &other) {
     Cell tmp {other};
     swap(x, tmp.x);
@@ -70,7 +81,6 @@ Cell & Cell::operator=(const Cell &other) {
     swap(type, tmp.type);
     return *this;
 }
-
 Cell & Cell::operator=(Cell &&other) {
     swap(x, other.x);
     swap(y, other.y);

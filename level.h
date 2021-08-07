@@ -44,8 +44,8 @@ class Level: public abc_board {
     void clearNextDisplay() override;
 
     // methods to move blocks:
-    virtual void curRight() override;
-    virtual void curLeft() override;
+    virtual bool curRight() override;
+    virtual bool curLeft() override;
     virtual void curDown() override;
     virtual void curCC() override;
     virtual void curC() override;

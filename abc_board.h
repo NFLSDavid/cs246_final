@@ -49,8 +49,8 @@ class abc_board {
     virtual void clearNextDisplay() = 0;
 
     // methods to move blocks:
-    virtual void curRight() = 0;
-    virtual void curLeft() = 0;
+    virtual bool curRight() = 0;
+    virtual bool curLeft() = 0;
     virtual void curDown() = 0;
     virtual void curCC() = 0;
     virtual void curC() = 0;
