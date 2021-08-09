@@ -78,6 +78,8 @@ void printGameBoard(abc_board *b1, abc_board *b2) {
     }
 }
 
+// return什么还需要抉择
+
 
 /*
 -text runs the program in text-only mode. No graphics are displayed. The default behaviour (no -text) is to show
@@ -88,8 +90,8 @@ random sequence every time you run the program. It’s good for testing, but not
 • -scriptfile2 xxx Uses xxx instead of sequence2.txt as a source of blocks for level 0, for player 2.
 • -startlevel n Starts the game in level n. The game starts in level 0 if this option is not supplied.
 */
-/*
-bool processArgs(int argc, char** argv) {
+
+bool processArgs(int argc, char** argv, abc_board **b1, abc_board **b2) {
     //int count = 0;
     if (argc > 3) {
         cout << "Invalid Command" << endl;
@@ -115,41 +117,34 @@ bool processArgs(int argc, char** argv) {
         } else if (curr == "-scriptfile1") {
             std::string filename = argv[i + 1];
             // filename作为参数pass进board里
+            *b1 = new Board{filename};
             
-        } else if (curr == "-scriptfile1") {
+        } else if (curr == "-scriptfile2") {
             std::string filename = argv[i + 1];
-            
+            *b2 = new Board{filename};
         } else if (curr == "-startlevel") {
             istringstream s{argv[i + 1]};
             int startlevel;
-            s >> startlevel;    
-        }
-        if ( curr[0] == '-') {
-            if (curr[1] == 'c') {
-                flags[0] = true;
-                flagStr[0] = curr.substr(2);
-            } else if (curr[1] == 'd') {
-                flags[1] = true;
-                flagStr[0] = curr.substr(2);
-            } else if (curr[1] == 'f') {
-                flags[2] = true;
-                flagStr[1] = curr.substr(2); // we start at the index where the numbers come out
-            } else {
-                cerr << "the program only takes in -c, -f, -d flags" << endl;
-                return false;
+            s >> startlevel;  
+            if (startlevel == 1) {
+                *b1 = new Level1{*b1}; 
+                *b2 = new Level1{*b2};
+            } else if (startlevel == 2) {
+                *b1 = new Level2{*b1}; 
+                *b2 = new Level2{*b2};
+            } else if (startlevel == 3) {
+                *b1 = new Level3{*b1}; 
+                *b2 = new Level3{*b2};
+            } else if (startlevel == 4) {
+                *b1 = new Level4{*b1}; 
+                *b2 = new Level4{*b2};
             }
-        } else {
-            if (count == 0) {
-                *infile = new ifstream( argv[i] );
-                count += 1;
-            } else {
-                *outfile = new ofstream( argv[i]);
-            }
+            
         }
     }
 
     return true;
-}*/
+}
 
 
 shared_ptr<abc_board> changeLevel(bool up, shared_ptr<abc_board> b) {
