@@ -15,6 +15,7 @@
 #include "blind.h"
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
 #include <map>
 using namespace std;
 
@@ -42,15 +43,15 @@ void printGameBoard(abc_board* b1, abc_board* b2) {
     cout << endl;
 
     //cout << __LINE__ << std::endl; 
-    Level1* obj;
+    /*Level1* obj;
     if ( b1->getLevel() == 0 ) {
         b1->printScoreLine();
     } else {
         obj = dynamic_cast<Level1*>( b1 );
         obj->printScoreLine();
-    }
+    }*/
 
-    //b1->printScoreLine();
+    b1->printScoreLine();
     //cout << __LINE__ << std::endl; 
     printRiver();
     b2->printScoreLine();
@@ -103,60 +104,62 @@ random sequence every time you run the program. It’s good for testing, but not
 • -startlevel n Starts the game in level n. The game starts in level 0 if this option is not supplied.
 */
 
-// bool processArgs(int argc, char** argv, abc_board **b1, abc_board **b2) {
-//     //int count = 0;
-//     if (argc > 3) {
-//         cout << "Invalid Command" << endl;
-//     }
+bool processArgs(int argc, char** argv, shared_ptr<abc_board>& b1, shared_ptr<abc_board>& b2) {
+    //int count = 0;
+    if (argc > 3) {
+        cout << "Invalid Command" << endl;
+        return false;
+    }
 
-//     if (argc == 2) {
-//         std::string curr = argv[1];
-//         if (curr == "-text") {
-//              // do not show graphical display
-//         } else {
-//             cout << "Invalid Command" << endl;
-//         }
-//     }
+    if (argc == 2) {
+        std::string curr = argv[1];
+        if (curr == "-text") {
+             // do not show graphical display
+        } else {
+            cout << "Invalid Command" << endl;
+        }
+    }
 
-//     // argc == 3
-//     for (int i = 1; i < argc; i++) {
-//         std::string curr = argv[i];
-//         if (curr == "-seed") {
-//             istringstream s{argv[i + 1]};
-//             int seed;
-//             s >> seed;
-//             // set seed
-//         } else if (curr == "-scriptfile1") {
-//             std::string filename = argv[i + 1];
-//             // filename作为参数pass进board里
-//             *b1 = new Board{filename};
+    // argc == 3
+    for (int i = 1; i < argc; i++) {
+        std::string curr = argv[i];
+        if (curr == "-seed") {
+            istringstream s{argv[i + 1]};
+            int seed;
+            s >> seed;
+            srand(seed);
+            // set seed
+        } else if (curr == "-scriptfile1") {
+            std::string filename = argv[i + 1];
+            // filename作为参数pass进board里
+            b1 = shared_ptr<abc_board>( new Board{filename} );
             
-//         } else if (curr == "-scriptfile2") {
-//             std::string filename = argv[i + 1];
-//             *b2 = new Board{filename};
-//         } else if (curr == "-startlevel") {
-//             istringstream s{argv[i + 1]};
-//             int startlevel;
-//             s >> startlevel;  
-//             if (startlevel == 1) {
-//                 *b1 = new Level1{*b1}; 
-//                 *b2 = new Level1{*b2};
-//             } else if (startlevel == 2) {
-//                 *b1 = new Level2{*b1}; 
-//                 *b2 = new Level2{*b2};
-//             } else if (startlevel == 3) {
-//                 *b1 = new Level3{*b1}; 
-//                 *b2 = new Level3{*b2};
-//             } else if (startlevel == 4) {
-//                 *b1 = new Level4{*b1}; 
-//                 *b2 = new Level4{*b2};
-//             }
+        } else if (curr == "-scriptfile2") {
+            std::string filename = argv[i + 1];
+            b2 = shared_ptr<abc_board>( new Board{filename} );
+        } else if (curr == "-startlevel") {
+            istringstream s{argv[i + 1]};
+            int startlevel;
+            s >> startlevel;  
+            if (startlevel == 1) {
+                b1 = shared_ptr<abc_board>( new Level1( b1 ) ); 
+                b2 = shared_ptr<abc_board>( new Level1( b2 ) );
+            } else if (startlevel == 2) {
+                b1 = shared_ptr<abc_board>( new Level2( b1 ) ); 
+                b2 = shared_ptr<abc_board>( new Level2( b2 ) );
+            } else if (startlevel == 3) {
+                b1 = shared_ptr<abc_board>( new Level3( b1 ) ); 
+                b2 = shared_ptr<abc_board>( new Level3( b2 ) );
+            } else if (startlevel == 4) {
+                b1 = shared_ptr<abc_board>( new Level4( b1 ) ); 
+                b2 = shared_ptr<abc_board>( new Level4( b2 ) );
+            }
             
-//         }
-//     }
+        }
+    }
 
-//     return true;
-// }
+    return true;
+}
 
 
 // void changeLevel(bool up, shared_ptr<abc_board>* b) {
@@ -194,27 +197,29 @@ void changeLevel(bool up, shared_ptr<abc_board>& b) {
             b = shared_ptr<abc_board>( new Level1( b ) );
             //*b = make_shared<Level1>((*b).get());  // b.get() abc_board *
             //std::cout << __LINE__ << std::endl;
+        } else if (b->getLevel() == 1) {
+            b = shared_ptr<abc_board>( new Level2( b ) );
+        } else if (b->getLevel() == 2) {
+            b = shared_ptr<abc_board>( new Level3( b ) );
+        } else if (b->getLevel() == 3) {
+            b = shared_ptr<abc_board>( new Level4( b ) );
+        }
+    } else {
+        if (b->getLevel() == 1) {
+            //std::cout << __LINE__ << std::endl;
+            b = shared_ptr<abc_board>( new Level0( b ) );
+            //*b = make_shared<Level1>((*b).get());  // b.get() abc_board *
+            //std::cout << __LINE__ << std::endl;
+        } else if (b->getLevel() == 2) {
+            b = shared_ptr<abc_board>( new Level1( b ) );
+        } else if (b->getLevel() == 3) {
+            b = shared_ptr<abc_board>( new Level2( b ) );
+        } else if (b->getLevel() == 4) {
+            b = shared_ptr<abc_board>( new Level3( b ) );
         }
     }
-    //     } else if ((*b)->getLevel() == 1) {
-    //         *b = make_shared<Level2>((*b).get());
-    //     } else if ((*b)->getLevel() == 2) {
-    //         (*b) = make_shared<Level3>((*b).get());
-    //     } else if ((*b)->getLevel() == 3) {
-    //         *b = make_shared<Level4>((*b).get());
-    //     }
-    // } else {
-    //     if ((*b)->getLevel() == 1) {
-    //         *b = make_shared<Level0>((*b).get());
-    //     } else if ((*b)->getLevel() == 2) {
-    //         *b = make_shared<Level1>((*b).get());
-    //     } else if ((*b)->getLevel() == 3) {
-    //         *b = make_shared<Level2>((*b).get());
-    //     } else if ((*b)->getLevel() == 4) {
-    //         *b = make_shared<Level3>((*b).get());
-    //     }
-    // }
 }
+
 
 // void changeLevel(bool up, abc_board** b) {
 //     if (up) {
@@ -282,15 +287,16 @@ void changeCurrentBlock(shared_ptr<abc_board>* player, string cmd) {
 
 
 int main(int argc, char* argv[]) {
-    //map<string, vector<string>> commands; 
-      
-    //commands.emplace("right", )
-    // 
+    
+    
     //shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     //istringstream filePlayer1 
     shared_ptr<abc_board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     shared_ptr<abc_board> b2 = make_shared<Board>("biquadris_sequence2.txt");
 
+    if (processArgs(argc, argv, b1, b2) == false) {
+        return 0;
+    }
     // abc_board *b1 = new Board{"allO.txt"};
     // abc_board *b2 = new Board{"biquadris_sequence2.txt"};
     b1->initAllCells();
@@ -306,7 +312,7 @@ int main(int argc, char* argv[]) {
     }*/
     //printGameBoard(b1.get(), b2.get());
     bool continueGame = true;
-    abc_board* player;
+    //abc_board* player;
     //shared_ptr<abc_board> player;
     string cmd;
     while (continueGame) {
@@ -318,7 +324,7 @@ int main(int argc, char* argv[]) {
                 cout << "Player1 Go" << endl;
                 
                 if (!player->newBlock()) {
-                    cout << "called";
+                    cout << "Player One Lost, Game Over!" << endl;
                     continueGame = false;
                     break;
                 } // have a new block
@@ -335,130 +341,151 @@ int main(int argc, char* argv[]) {
                 //printGameBoard(b1, b2);
                 printGameBoard(b1.get(), b2.get());
             }
-
+            bool restart = false;
             while (true) {
                 cin >> cmd;
                 int steps = 1;
                 try {
-                    steps = stoi( cmd );
-                } catch ( exception& ) {
+                    steps = stoi(cmd) ;
+                } catch (exception&) {
                     /* ... */
                 }
- 
-                if (cmd == "right") {
-                    bool successful = player->curRight();
-                    if (!successful) {
-                        int linesCleared = player->clear();
-                        player->judge(linesCleared);
-                        break;
-                    }               
-                } else if (cmd == "left") {
-                    bool successful = player->curLeft();
-                    // if 能往下(true)，nothing happens
-                    // if not
-                    if (!successful) {
-                        int linesCleared = player->clear();
-                        player->judge(linesCleared);
-                        break;
-                    }
 
-                } else if (cmd == "down") {
-                    player->curDown();
-                } else if (cmd == "counterclockwise") {
-                    player->curCC();
-                } else if (cmd == "clockwise") {
-                    player->curC();
-                } else if (cmd == "I" || cmd == "J" || cmd == "T" || cmd == "L" ||  
-                cmd == "S" ||cmd == "Z" || cmd == "O") {
-                    changeCurrentBlock(&player, cmd);
+                cout << "steps are: " << steps << endl;
+                bool dropped = false;
+                
+                for (int j = 0; j < steps; j++) {
+                    
+                    if (cmd[0] == 'r') {
+                        if (cmd[1] == 'a') {                            // random
+                            player->initfs("");
+                        } else if (cmd[1] == 'e') {                     // restart
+                            //b1->restart();
+                            //b2->restart();
+                            shared_ptr<abc_board> b3 = make_shared<Board>("biquadris_sequence1.txt");
+                            shared_ptr<abc_board> b4 = make_shared<Board>("biquadris_sequence2.txt");
+                            b1 = b3;
+                            b2 = b4;
+
+                            b1->initAllCells();
+                            b2->initAllCells();
+                            b1->setNextType();
+                            b2->setNextType();
+                            restart = true;
+                            break;
+                        } else if (cmd[1] == 'i') {                     // right
+                            bool successful = player->curRight();
+                            if (!successful) {
+                                int linesCleared = player->clear();
+                                player->judge(linesCleared);
+                                break;
+                            }
+                        }       
+                    } else if (cmd[0] == 'l') {
+
+                        if (cmd.substr(0,3) == "lef") {  // left
+                            bool successful = player->curLeft();
+                            // if 能往下(true)，nothing happens
+                            // if not
+                            if (!successful) {
+                                int linesCleared = player->clear();
+                                player->judge(linesCleared);
+                                break;
+                            }
+                        } else if (cmd.substr(0,6) == "levelu") {  // levelup
+                            changeLevel(true, player);
+                        } else if (cmd.substr(0,6) == "leveld") {  // levelup
+                            changeLevel(false, player);
+                        }
+                    
+                    } else if (cmd[0] == 'd') {
+                        if (cmd.substr(0,2) == "do") {              // down
+                            player->curDown();
+                        } else if (cmd.substr(0,2) == "dr") {              // drop
+
+                            cout << "dropped the block" << endl;
+                            player->curDrop();
+                            int linesCleared = player->clear();
+                            player->judge(linesCleared);
+                            //player->update();
+
+                            // print一下
+                            //printGameBoard(b1, b2);
+                            printGameBoard(b1.get(), b2.get());
+
                             
-                }
-                /*else if (cmd == "I") {
-                    player->changeCurrBlock('I');
-                } else if (cmd == "J") {
-                    player->changeCurrBlock('J');
-                } else if (cmd == "T") {
-                    player->changeCurrBlock('T');
-                } else if (cmd == "L") {
-                    player->changeCurrBlock('L');
-                } else if (cmd == "S") {
-                    player->changeCurrBlock('S');
-                } else if (cmd == "Z") {
-                    player->changeCurrBlock('Z');
-                } else if (cmd == "O") {
-                    player->changeCurrBlock('O');
-                } */else if (cmd == "drop") {
-                    player->curDrop();
-                    int linesCleared = player->clear();
-                    //player->judge(linesCleared);
-                    //player->update();
+                            if (linesCleared >= 2) {
+                                cout << "Enter the negative influence you want to impose on the opponent's board: ";
+                                string inf;
+                                cin >> inf;
 
-                    // print一下
-                    //printGameBoard(b1, b2);
-                    printGameBoard(b1.get(), b2.get());
+                                if (inf[0] == 'h') {                                        // heavy
+                                    if (i == 0) {
+                                        b2 = shared_ptr<abc_board>( new Heavy( b2 ) );
+                                    } else {
+                                        b1 = shared_ptr<abc_board>( new Heavy( b1 ) );
+                                    }
+                                } else if (inf[0] == 'b') {                                 // blind
+                                    if (i == 0) {
+                                        b2 = shared_ptr<abc_board>( new Blind( b2 ) );
+                                    } else {
+                                        b1 = shared_ptr<abc_board>( new Blind( b1 ) );
+                                    }
+                                } else if (inf[0] == 'f') {                                 // force
+                                    string changed;
+                                    cin >> changed;
+                                    if (i == 0) {
+                                        changeCurrentBlock(&b2, changed);
+                                    } else {
+                                        changeCurrentBlock(&b1, changed);
+                                    }    
+                                }
+                            }
+                            dropped = true;
+                            break;
+                        }
+                        
+                    } else if (cmd[0] == 'c') {
+                        if (cmd.substr(0,2) == "co") {
+                            player->curC();
+                        } else if (cmd.substr(0,2) == "cl") {
+                            player->curCC();
+                        }
+                        
+                    } else if (cmd == "I" || cmd == "J" || cmd == "T" || cmd == "L" ||  
+                    cmd == "S" ||cmd == "Z" || cmd == "O") {
+                        changeCurrentBlock(&player, cmd);
+                                
+                    } else if (cmd[0] == 'n') {
+                        string filename;
+                        cin >> filename;
+                        player->initfs(filename);
+                    }
 
                     
-                    if (linesCleared >= 2) {
-                        cout << "Enter the negative influence you want to impose on the opponent's board: ";
-                        string inf;
-                        cin >> inf;
-
-                        /*if (inf == "heavy") {
-                            if (i == 0) {
-                                b2 = new Heavy(b2);
-                            } else {
-                                b1 = new Heavy(b1);
-                            }
-                        } else if (inf == "blind") {
-                            if (i == 0) {
-                                b2 = new Blind(b2);
-                            } else {
-                                b1 = new Blind(b1);
-                            }
-                        } else if (inf == "force") {
-                            string changed;
-                            cin >> changed;
-                            if (i == 0) {
-                                changeCurrentBlock(&b2, changed);
-                            } else {
-                                changeCurrentBlock(&b1, changed);
-                            }    
-                        }*/
+                    if (i == 0) {
+                        b1 = player;
+                    } else {
+                        b2 = player;
                     }
+                //printGameBoard(b1, b2);
+                    printGameBoard(b1.get(), b2.get());
+                }
+                if (dropped || restart) {
                     break;
-                } else if (cmd == "levelup") {
-                    //player = new Level1(player);
-                    changeLevel(true, player);
-                } else if (cmd == "leveldown") {
-                    changeLevel(false, player);
                 }
-
-                else if (cmd == "random") {
-                    player->initfs("");
-                }  else if (cmd == "norandom") {
-                    string filename;
-                    cin >> filename;
-                    player->initfs(filename);
-                }
-
                 if (i == 0) {
                     b1 = player;
                 } else {
                     b2 = player;
                 }
-                //printGameBoard(b1, b2);
-                //std::cout << __LINE__ << endl;
-                printGameBoard(b1.get(), b2.get());
-                //std::cout << __LINE__ << endl; 
-            } 
-            if (i == 0) {
-                b1 = player;
-            } else {
-                b2 = player;
             }
-            //printGameBoard(b1, b2);
-            printGameBoard(b1.get(), b2.get());
+            if (restart) {
+                restart = false;
+                break;
+            }
         }
+        if (!continueGame) break;
     }
 }
 
@@ -488,5 +515,119 @@ int main(int argc, char* argv[]) {
                     //pop the original current block out
                     //push the new block in instead
                 }*/
+                 
 
-                
+
+
+// if (cmd == "right") {
+//                         bool successful = player->curRight();
+//                         if (!successful) {
+//                             int linesCleared = player->clear();
+//                             player->judge(linesCleared);
+//                             break;
+//                         }               
+//                     } else if (cmd == "left") {
+//                         bool successful = player->curLeft();
+//                         // if 能往下(true)，nothing happens
+//                         // if not
+//                         if (!successful) {
+//                             int linesCleared = player->clear();
+//                             player->judge(linesCleared);
+//                             break;
+//                         }
+
+//                     } else if (cmd == "down") {
+//                         player->curDown();
+//                     } else if (cmd == "counterclockwise") {
+//                         player->curCC();
+//                     } else if (cmd == "clockwise") {
+//                         player->curC();
+//                     } else if (cmd == "I" || cmd == "J" || cmd == "T" || cmd == "L" ||  
+//                     cmd == "S" ||cmd == "Z" || cmd == "O") {
+//                         changeCurrentBlock(&player, cmd);
+                                
+//                     }
+//                     /*else if (cmd == "I") {
+//                         player->changeCurrBlock('I');
+//                     } else if (cmd == "J") {
+//                         player->changeCurrBlock('J');
+//                     } else if (cmd == "T") {
+//                         player->changeCurrBlock('T');
+//                     } else if (cmd == "L") {
+//                         player->changeCurrBlock('L');
+//                     } else if (cmd == "S") {
+//                         player->changeCurrBlock('S');
+//                     } else if (cmd == "Z") {
+//                         player->changeCurrBlock('Z');
+//                     } else if (cmd == "O") {
+//                         player->changeCurrBlock('O');
+//                     } */else if (cmd == "drop") {
+//                         player->curDrop();
+//                         int linesCleared = player->clear();
+//                         player->judge(linesCleared);
+//                         //player->update();
+
+//                         // print一下
+//                         //printGameBoard(b1, b2);
+//                         printGameBoard(b1.get(), b2.get());
+
+                        
+//                         if (linesCleared >= 2) {
+//                             cout << "Enter the negative influence you want to impose on the opponent's board: ";
+//                             string inf;
+//                             cin >> inf;
+
+//                             /*if (inf == "heavy") {
+//                                 if (i == 0) {
+//                                     b2 = new Heavy(b2);
+//                                 } else {
+//                                     b1 = new Heavy(b1);
+//                                 }
+//                             } else if (inf == "blind") {
+//                                 if (i == 0) {
+//                                     b2 = new Blind(b2);
+//                                 } else {
+//                                     b1 = new Blind(b1);
+//                                 }
+//                             } else if (inf == "force") {
+//                                 string changed;
+//                                 cin >> changed;
+//                                 if (i == 0) {
+//                                     changeCurrentBlock(&b2, changed);
+//                                 } else {
+//                                     changeCurrentBlock(&b1, changed);
+//                                 }    
+//                             }*/
+//                         }
+//                         break;
+//                     } else if (cmd == "levelup") {
+//                         //player = new Level1(player);
+//                         changeLevel(true, player);
+//                     } else if (cmd == "leveldown") {
+//                         changeLevel(false, player);
+//                     }
+
+//                     else if (cmd == "random") {
+//                         player->initfs("");
+//                     }  else if (cmd == "norandom") {
+//                         string filename;
+//                         cin >> filename;
+//                         player->initfs(filename);
+//                     }
+
+//                     if (i == 0) {
+//                         b1 = player;
+//                     } else {
+//                         b2 = player;
+//                     }
+//                     //printGameBoard(b1, b2);
+//                     //std::cout << __LINE__ << endl;
+//                     printGameBoard(b1.get(), b2.get());
+//                     //std::cout << __LINE__ << endl; 
+//                 } 
+        
+//                 if (i == 0) {
+//                     b1 = player;
+//                 } else {
+//                     b2 = player;
+//                 }

@@ -20,7 +20,7 @@ int Level::getHiScore() const {
 }
 
 int Level::getCurrentScore() const {
-    std::cout << __LINE__ << std::endl; 
+    //std::cout << __LINE__ << std::endl; 
     return component->getCurrentScore();
 }
 
@@ -57,7 +57,7 @@ char Level::getGeneratedFront() const {
 }
 
 char Level::getNextType() const {
-    cout << "entered level's nexttype" << endl;
+    //cout << "entered level's nexttype" << endl;
     return component->getNextType();
 }
 
@@ -67,12 +67,14 @@ Block* Level::getCurrBlock() {
 
 void Level::heavyOne() {
     if (getCurrBlock()->getLevel() == 3 || getCurrBlock()->getLevel() == 4) {
+        cout << "heavy one down" << endl;
         getCurrBlock()->down();
     }
 }
 
 bool Level::curRight() {
     getCurrBlock()->right();
+    cout << "curRight called" << endl;
     heavyOne();
     return true;
 }
@@ -174,9 +176,9 @@ void Level::printLevelLine() {
 }
 
 void Level::printScoreLine() {
-    std::cout << __LINE__ << std::endl; 
+    //std::cout << __LINE__ << std::endl; 
     cout << "Score:" << setw(5) << getCurrentScore();
-    std::cout << __LINE__ << std::endl;
+    //std::cout << __LINE__ << std::endl;
     //component->printScoreLine();
 }
     
