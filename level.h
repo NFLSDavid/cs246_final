@@ -8,7 +8,7 @@ class Level: public abc_board {
     virtual ~Level();
 
     char getGeneratedFront() const override;
-    //virtual int getLevel() const = 0;
+    virtual int getLevel() const = 0;
     char getNextType() const override;
     int getHiScore() const override;
     int getCurrentScore() const override;
@@ -60,8 +60,11 @@ class Level: public abc_board {
     void printRows(int r) override;
 
     protected:
-        Level(abc_board *c);
-        abc_board *component;
+        // Level(abc_board *c);
+        // abc_board *component;
+
+        Level( std::shared_ptr<abc_board> c );
+        std::shared_ptr<abc_board> component; 
         
 };
 

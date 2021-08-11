@@ -1,6 +1,6 @@
 #include "level0.h"
 
-Level0::Level0(abc_board *c) : Level{c} {}
+Level0::Level0(std::shared_ptr<abc_board> c) : Level{c} {}
 
 int Level0::getLevel() const {
     return 0;

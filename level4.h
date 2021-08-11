@@ -20,11 +20,14 @@ class Level4: public Level {
         string filename4;
         queue <char> toBeGenerated4;
     public:
-        void init4(string name);
+        //void init4(string name);
+        void initfs(string name) override;
         int getLevel() const override;
-        Level4(abc_board *c);
+        // Level4(abc_board *c);
+        Level4( std::shared_ptr<abc_board> c ); 
         bool newBlock() override;
         void setNextType() override;
+        void curDrop() override;
         int countNotCleared = 0;  //如果%5 = 0 且不等于0, 就drop (在每次drop函数的时候check并unpdate)
         bool dropStar(); // if dropped successfully, return true
         void judge(int rowsCleared) override;

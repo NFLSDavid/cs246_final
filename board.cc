@@ -331,7 +331,9 @@ void Board::printLevelLine() {
 }
 
 void Board::printScoreLine() {
-    cout << "Score:" << setw(5) << currentScore;
+
+    cout << "Score:" << setw(5) << getCurrentScore();
+
 }
 
 void Board::printRows(int i) {

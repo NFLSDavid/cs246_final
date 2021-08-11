@@ -4,13 +4,17 @@
 #include <fstream>
 #include <iomanip>
 
-Level3::Level3(abc_board *c) : Level{c} {}
+Level3::Level3(std::shared_ptr<abc_board> c) : Level{c} {}
 
 int Level3::getLevel() const {
     return 3;
 }
 
-void Level3::init3(string name) {
+void Level3::initfs(string name) {
+    if (name.empty()) {
+        random = true;
+        return;
+    }
     filename3 = name;
     random = false;
     ifstream infile{name};
@@ -69,4 +73,5 @@ void Level3::setNextType() {
 }
 
 void Level3::judge(int) {}
+
 

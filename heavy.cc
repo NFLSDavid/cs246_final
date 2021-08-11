@@ -1,7 +1,7 @@
 #include "heavy.h"
 using namespace std;
 
-Heavy::Heavy(abc_board *c) : Level{c}, isHeavy{true} {}
+Heavy::Heavy(std::shared_ptr<abc_board> c) : Level{c}, isHeavy{true} {}
 
 int Heavy::getLevel() const {
     return component->getLevel();

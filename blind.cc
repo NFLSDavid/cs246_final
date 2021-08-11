@@ -2,7 +2,7 @@
 #include "cell.h"
 using namespace std;
 
-Blind::Blind(abc_board *c) : Level{c}, isBlinded{true} {
+Blind::Blind(std::shared_ptr<abc_board> c) : Level{c}, isBlinded{true} {
     auto b = getBoard();
     for (int x = 0; x < 11; ++x) {
         for (int y = 0; y < 18; ++y) {

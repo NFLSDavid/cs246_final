@@ -17,7 +17,7 @@ class Heavy: public Level {
     private:
         bool isHeavy;
     public:
-        Heavy(abc_board *c);
+        Heavy(std::shared_ptr<abc_board> c);
         int getLevel() const override;
         bool newBlock() override;
         void setNextType() override;

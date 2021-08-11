@@ -1,7 +1,9 @@
 #include "level2.h"
 #include <cstdlib>
 
-Level2::Level2(abc_board *c) : Level{c} {}
+// Level2::Level2(abc_board *c) : Level{c} {}
+Level2::Level2(std::shared_ptr<abc_board> c) : Level{c} { }
+
 
 int Level2::getLevel() const {
     return 2;

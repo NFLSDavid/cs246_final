@@ -19,8 +19,10 @@ class Level3: public Level {
         string filename3;
         queue <char> toBeGenerated3;
     public:
-        void init3(string name);
-        Level3(abc_board *c);
+        //void init3(string name);
+        void initfs(string name) override;
+        // Level3(abc_board *c);
+        Level3(std::shared_ptr<abc_board> c);
         int getLevel() const override;
         bool newBlock() override;
         void setNextType() override;

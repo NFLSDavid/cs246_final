@@ -15,7 +15,9 @@
 #include "blind.h"
 #include <iostream>
 #include <sstream>
+#include <map>
 using namespace std;
+
 
 void printRiver() {
     cout << "       ";
@@ -33,13 +35,23 @@ void printDivider() {
     cout << endl;
 }
 
-void printGameBoard(abc_board *b1, abc_board *b2) {
+void printGameBoard(abc_board* b1, abc_board* b2) {
     b1->printLevelLine();
     printRiver();
     b2->printLevelLine();
     cout << endl;
 
-    b1->printScoreLine();
+    //cout << __LINE__ << std::endl; 
+    Level1* obj;
+    if ( b1->getLevel() == 0 ) {
+        b1->printScoreLine();
+    } else {
+        obj = dynamic_cast<Level1*>( b1 );
+        obj->printScoreLine();
+    }
+
+    //b1->printScoreLine();
+    //cout << __LINE__ << std::endl; 
     printRiver();
     b2->printScoreLine();
     cout << endl;
@@ -91,115 +103,145 @@ random sequence every time you run the program. It’s good for testing, but not
 • -startlevel n Starts the game in level n. The game starts in level 0 if this option is not supplied.
 */
 
-bool processArgs(int argc, char** argv, abc_board **b1, abc_board **b2) {
-    //int count = 0;
-    if (argc > 3) {
-        cout << "Invalid Command" << endl;
-    }
+// bool processArgs(int argc, char** argv, abc_board **b1, abc_board **b2) {
+//     //int count = 0;
+//     if (argc > 3) {
+//         cout << "Invalid Command" << endl;
+//     }
 
-    if (argc == 2) {
-        std::string curr = argv[1];
-        if (curr == "-text") {
-             // do not show graphical display
-        } else {
-            cout << "Invalid Command" << endl;
-        }
-    }
+//     if (argc == 2) {
+//         std::string curr = argv[1];
+//         if (curr == "-text") {
+//              // do not show graphical display
+//         } else {
+//             cout << "Invalid Command" << endl;
+//         }
+//     }
 
-    // argc == 3
-    for (int i = 1; i < argc; i++) {
-        std::string curr = argv[i];
-        if (curr == "-seed") {
-            istringstream s{argv[i + 1]};
-            int seed;
-            s >> seed;
-            // set seed
-        } else if (curr == "-scriptfile1") {
-            std::string filename = argv[i + 1];
-            // filename作为参数pass进board里
-            *b1 = new Board{filename};
+//     // argc == 3
+//     for (int i = 1; i < argc; i++) {
+//         std::string curr = argv[i];
+//         if (curr == "-seed") {
+//             istringstream s{argv[i + 1]};
+//             int seed;
+//             s >> seed;
+//             // set seed
+//         } else if (curr == "-scriptfile1") {
+//             std::string filename = argv[i + 1];
+//             // filename作为参数pass进board里
+//             *b1 = new Board{filename};
             
-        } else if (curr == "-scriptfile2") {
-            std::string filename = argv[i + 1];
-            *b2 = new Board{filename};
-        } else if (curr == "-startlevel") {
-            istringstream s{argv[i + 1]};
-            int startlevel;
-            s >> startlevel;  
-            if (startlevel == 1) {
-                *b1 = new Level1{*b1}; 
-                *b2 = new Level1{*b2};
-            } else if (startlevel == 2) {
-                *b1 = new Level2{*b1}; 
-                *b2 = new Level2{*b2};
-            } else if (startlevel == 3) {
-                *b1 = new Level3{*b1}; 
-                *b2 = new Level3{*b2};
-            } else if (startlevel == 4) {
-                *b1 = new Level4{*b1}; 
-                *b2 = new Level4{*b2};
-            }
+//         } else if (curr == "-scriptfile2") {
+//             std::string filename = argv[i + 1];
+//             *b2 = new Board{filename};
+//         } else if (curr == "-startlevel") {
+//             istringstream s{argv[i + 1]};
+//             int startlevel;
+//             s >> startlevel;  
+//             if (startlevel == 1) {
+//                 *b1 = new Level1{*b1}; 
+//                 *b2 = new Level1{*b2};
+//             } else if (startlevel == 2) {
+//                 *b1 = new Level2{*b1}; 
+//                 *b2 = new Level2{*b2};
+//             } else if (startlevel == 3) {
+//                 *b1 = new Level3{*b1}; 
+//                 *b2 = new Level3{*b2};
+//             } else if (startlevel == 4) {
+//                 *b1 = new Level4{*b1}; 
+//                 *b2 = new Level4{*b2};
+//             }
             
-        }
-    }
+//         }
+//     }
 
-    return true;
-}
+//     return true;
+// }
 
 
-shared_ptr<abc_board> changeLevel(bool up, shared_ptr<abc_board> b) {
+// void changeLevel(bool up, shared_ptr<abc_board>* b) {
+//     if (up) {
+//         if ((*b)->getLevel() == 0) {
+//             //std::cout << __LINE__ << std::endl;
+//             *b = shared_ptr<abc_board>( new Level1( (*b).get() ) );
+//             //*b = make_shared<Level1>((*b).get());  // b.get() abc_board *
+//             //std::cout << __LINE__ << std::endl;
+//         } else if ((*b)->getLevel() == 1) {
+//             *b = make_shared<Level2>((*b).get());
+//         } else if ((*b)->getLevel() == 2) {
+//             (*b) = make_shared<Level3>((*b).get());
+//         } else if ((*b)->getLevel() == 3) {
+//             *b = make_shared<Level4>((*b).get());
+//         }
+//     } else {
+//         if ((*b)->getLevel() == 1) {
+//             *b = make_shared<Level0>((*b).get());
+//         } else if ((*b)->getLevel() == 2) {
+//             *b = make_shared<Level1>((*b).get());
+//         } else if ((*b)->getLevel() == 3) {
+//             *b = make_shared<Level2>((*b).get());
+//         } else if ((*b)->getLevel() == 4) {
+//             *b = make_shared<Level3>((*b).get());
+//         }
+//     }
+// }
+
+// delete this function if not working 
+void changeLevel(bool up, shared_ptr<abc_board>& b) {
     if (up) {
         if (b->getLevel() == 0) {
-            
-            b = make_shared<Level1>(b.get());  // b.get() abc_board *
-        } else if (b->getLevel() == 1) {
-            b = make_shared<Level2>(b.get());
-        } else if (b->getLevel() == 2) {
-            b = make_shared<Level3>(b.get());
-        } else if (b->getLevel() == 3) {
-            b = make_shared<Level4>(b.get());
+            //std::cout << __LINE__ << std::endl;
+            b = shared_ptr<abc_board>( new Level1( b ) );
+            //*b = make_shared<Level1>((*b).get());  // b.get() abc_board *
+            //std::cout << __LINE__ << std::endl;
         }
-        return b;
-    } else {
-        if (b->getLevel() == 1) {
-            b = make_shared<Level0>(b.get());
-        } else if (b->getLevel() == 2) {
-            b = make_shared<Level1>(b.get());
-        } else if (b->getLevel() == 3) {
-            b = make_shared<Level2>(b.get());
-        } else if (b->getLevel() == 4) {
-            b = make_shared<Level3>(b.get());
-        } 
-        return b;
     }
+    //     } else if ((*b)->getLevel() == 1) {
+    //         *b = make_shared<Level2>((*b).get());
+    //     } else if ((*b)->getLevel() == 2) {
+    //         (*b) = make_shared<Level3>((*b).get());
+    //     } else if ((*b)->getLevel() == 3) {
+    //         *b = make_shared<Level4>((*b).get());
+    //     }
+    // } else {
+    //     if ((*b)->getLevel() == 1) {
+    //         *b = make_shared<Level0>((*b).get());
+    //     } else if ((*b)->getLevel() == 2) {
+    //         *b = make_shared<Level1>((*b).get());
+    //     } else if ((*b)->getLevel() == 3) {
+    //         *b = make_shared<Level2>((*b).get());
+    //     } else if ((*b)->getLevel() == 4) {
+    //         *b = make_shared<Level3>((*b).get());
+    //     }
+    // }
 }
 
-void changeLevel(bool up, abc_board** b) {
-    if (up) {
-        if ((*b)->getLevel() == 0) {
+// void changeLevel(bool up, abc_board** b) {
+//     if (up) {
+//         if ((*b)->getLevel() == 0) {
             
-            *b = new Level1(*b);  // b.get() abc_board *
-        } else if ((*b)->getLevel() == 1) {
-            *b = new Level2(*b);
-        } else if ((*b)->getLevel() == 2) {
-            *b = new Level3(*b);
-        } else if ((*b)->getLevel() == 3) {
-            *b = new Level4(*b);
-        }
-        return;
-    } /*else {
-        if (b->getLevel() == 1) {
-            b = make_shared<Level0>(b.get());
-        } else if (b->getLevel() == 2) {
-            b = make_shared<Level1>(b.get());
-        } else if (b->getLevel() == 3) {
-            b = make_shared<Level2>(b.get());
-        } else if (b->getLevel() == 4) {
-            b = make_shared<Level3>(b.get());
-        } 
-        return b;
-    }*/
-}
+//             *b = new Level1(*b);  // b.get() abc_board *
+//         } else if ((*b)->getLevel() == 1) {
+//             *b = new Level2(*b);
+//         } else if ((*b)->getLevel() == 2) {
+//             *b = new Level3(*b);
+//         } else if ((*b)->getLevel() == 3) {
+//             *b = new Level4(*b);
+//         }
+//         return;
+//     } else {
+//          if ((*b)->getLevel() == 1) {
+            
+//             *b = new Level0(*b);  // b.get() abc_board *
+//         } else if ((*b)->getLevel() == 2) {
+//             *b = new Level1(*b);
+//         } else if ((*b)->getLevel() == 3) {
+//             *b = new Level2(*b);
+//         } else if ((*b)->getLevel() == 4) {
+//             *b = new Level3(*b);
+//         }
+//     }
+// }
 
 
 void changeCurrentBlock(abc_board** player, string cmd) {
@@ -220,15 +262,37 @@ void changeCurrentBlock(abc_board** player, string cmd) {
     } 
 }
 
+void changeCurrentBlock(shared_ptr<abc_board>* player, string cmd) {
+   if (cmd == "I") {
+        (*player)->changeCurrBlock('I');
+    } else if (cmd == "J") {
+        (*player)->changeCurrBlock('J');
+    } else if (cmd == "T") {
+        (*player)->changeCurrBlock('T');
+    } else if (cmd == "L") {
+        (*player)->changeCurrBlock('L');
+    } else if (cmd == "S") {
+        (*player)->changeCurrBlock('S');
+    } else if (cmd == "Z") {
+        (*player)->changeCurrBlock('Z');
+    } else if (cmd == "O") {
+        (*player)->changeCurrBlock('O');
+    } 
+}
+
 
 int main(int argc, char* argv[]) {
+    //map<string, vector<string>> commands; 
+      
+    //commands.emplace("right", )
+    // 
     //shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     //istringstream filePlayer1 
-    /*shared_ptr<abc_board> b1 = make_shared<Board>("biquadris_sequence1.txt");
-    shared_ptr<abc_board> b2 = make_shared<Board>("biquadris_sequence2.txt");*/
+    shared_ptr<abc_board> b1 = make_shared<Board>("biquadris_sequence1.txt");
+    shared_ptr<abc_board> b2 = make_shared<Board>("biquadris_sequence2.txt");
 
-    abc_board *b1 = new Board{"allO.txt"};
-    abc_board *b2 = new Board{"biquadris_sequence2.txt"};
+    // abc_board *b1 = new Board{"allO.txt"};
+    // abc_board *b2 = new Board{"biquadris_sequence2.txt"};
     b1->initAllCells();
     b2->initAllCells();
     b1->setNextType();
@@ -236,15 +300,21 @@ int main(int argc, char* argv[]) {
     //cout << b1->getNextType();
     //b1->update();
     //cout << "Player1 Go" << endl;
+    /*while (true) {
+        cin >> cmd;
 
+    }*/
     //printGameBoard(b1.get(), b2.get());
     bool continueGame = true;
     abc_board* player;
+    //shared_ptr<abc_board> player;
     string cmd;
     while (continueGame) {
         for (int i = 0; i < 2; i++) {
+            shared_ptr<abc_board>& player = i == 0 ? b1 : b2;
+            // player = i == 0 ? b1 : b2; 
             if (i == 0) {
-                player = b1;
+                //player = b1;
                 cout << "Player1 Go" << endl;
                 
                 if (!player->newBlock()) {
@@ -252,22 +322,29 @@ int main(int argc, char* argv[]) {
                     continueGame = false;
                     break;
                 } // have a new block
-        
-                printGameBoard(b1, b2);
+                //printGameBoard(b1, b2);
+                printGameBoard(b1.get(), b2.get());
                 
             } else {
-                player = b2;
+                //player = b2;
                 cout << "Player2 Go" << endl;
                 if (!player->newBlock()) {
                     continueGame = false;
                     break;
                 }
-                printGameBoard(b1, b2);
+                //printGameBoard(b1, b2);
+                printGameBoard(b1.get(), b2.get());
             }
 
             while (true) {
                 cin >> cmd;
-
+                int steps = 1;
+                try {
+                    steps = stoi( cmd );
+                } catch ( exception& ) {
+                    /* ... */
+                }
+ 
                 if (cmd == "right") {
                     bool successful = player->curRight();
                     if (!successful) {
@@ -313,11 +390,12 @@ int main(int argc, char* argv[]) {
                 } */else if (cmd == "drop") {
                     player->curDrop();
                     int linesCleared = player->clear();
-                    player->judge(linesCleared);
+                    //player->judge(linesCleared);
                     //player->update();
 
                     // print一下
-                    printGameBoard(b1, b2);
+                    //printGameBoard(b1, b2);
+                    printGameBoard(b1.get(), b2.get());
 
                     
                     if (linesCleared >= 2) {
@@ -325,7 +403,7 @@ int main(int argc, char* argv[]) {
                         string inf;
                         cin >> inf;
 
-                        if (inf == "heavy") {
+                        /*if (inf == "heavy") {
                             if (i == 0) {
                                 b2 = new Heavy(b2);
                             } else {
@@ -345,22 +423,22 @@ int main(int argc, char* argv[]) {
                             } else {
                                 changeCurrentBlock(&b1, changed);
                             }    
-                        }
+                        }*/
                     }
                     break;
                 } else if (cmd == "levelup") {
                     //player = new Level1(player);
-                    changeLevel(true, &player);
+                    changeLevel(true, player);
                 } else if (cmd == "leveldown") {
-                    //player = changeLevel(false, player);
+                    changeLevel(false, player);
                 }
 
                 else if (cmd == "random") {
-                    
+                    player->initfs("");
                 }  else if (cmd == "norandom") {
                     string filename;
                     cin >> filename;
-                    b1->initfs(filename);
+                    player->initfs(filename);
                 }
 
                 if (i == 0) {
@@ -368,14 +446,18 @@ int main(int argc, char* argv[]) {
                 } else {
                     b2 = player;
                 }
-                printGameBoard(b1, b2);
+                //printGameBoard(b1, b2);
+                //std::cout << __LINE__ << endl;
+                printGameBoard(b1.get(), b2.get());
+                //std::cout << __LINE__ << endl; 
             } 
             if (i == 0) {
                 b1 = player;
             } else {
                 b2 = player;
             }
-            printGameBoard(b1, b2);
+            //printGameBoard(b1, b2);
+            printGameBoard(b1.get(), b2.get());
         }
     }
 }
@@ -406,3 +488,5 @@ int main(int argc, char* argv[]) {
                     //pop the original current block out
                     //push the new block in instead
                 }*/
+
+                

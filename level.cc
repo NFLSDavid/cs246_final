@@ -12,13 +12,15 @@
 #include <iomanip>
 using namespace std;
 
-Level::Level(abc_board *c): component{c} {}
+//Level::Level(abc_board *c): component{c} {}
+Level::Level( std::shared_ptr<abc_board> c ): component{ c } { }
 
 int Level::getHiScore() const {
     return component->getHiScore();
 }
 
 int Level::getCurrentScore() const {
+    std::cout << __LINE__ << std::endl; 
     return component->getCurrentScore();
 }
 
@@ -159,7 +161,8 @@ void Level::print() {
 }
 
 void Level::initfs(string filename) {
-    component->initfs(filename);
+    //component->initfs(filename);
+    initfs(filename);  //只有在level3, 4才能被call
 }
 
 void Level::clearNextDisplay() {
@@ -171,7 +174,9 @@ void Level::printLevelLine() {
 }
 
 void Level::printScoreLine() {
+    std::cout << __LINE__ << std::endl; 
     cout << "Score:" << setw(5) << getCurrentScore();
+    std::cout << __LINE__ << std::endl;
     //component->printScoreLine();
 }
     
@@ -180,3 +185,43 @@ void Level::printRows(int r) {
 }
 
 Level::~Level() {}
+
+
+// class Board {       // no need for inheritance
+//     /* useful fields */ 
+//     std::shared_ptr<Level*> currLevel = level object /* strategy design pattern*/
+    
+// }; 
+
+// // call level up 
+//     if level == 0 {
+//         currLevel = std::make_shared<Level2*>( /* params */ );
+//     }
+
+// class Level {
+//     virtual Block* generateBlock() = 0; 
+// }; 
+
+// class LevelThree : public Level {
+//     Block* generateBlock() override {
+//         // some level 3: each block has same possibility ( hard code ) 
+//         // I, Z, O, S, J, T, L
+//         // int num = rand() % 70;   generate between 0 and 69 
+//         return new Block( "I" ); 
+//     }
+// }
+
+// auto nextBlock = player1->board->currLevel->generateBlock();
+
+/*std::string cmd;
+
+std::cin >> cmd; 
+while 
+try {
+    int num = std::stoi( cmd ); // int
+    std::cin >> cmd2;
+
+} catch ( exception& ) {
+
+}
+.....*/

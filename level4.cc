@@ -5,13 +5,19 @@
 #include <iomanip>
 #include "cell.h"
 
-Level4::Level4(abc_board *c) : Level{c} {}
+//Level4::Level4(abc_board *c) : Level{c} {}
+
+Level4::Level4(std::shared_ptr<abc_board> c ) : Level{c} {}
 
 int Level4::getLevel() const {
     return 4;
 }
 
-void Level4::init4(string name) {
+void Level4::initfs(string name) {
+    if (name.empty()){
+        random = true;
+        return;
+    }
     filename4 = name;
     random = false;
     ifstream infile{name};
@@ -41,7 +47,8 @@ bool Level4::newBlock() {
 
     bool successful = b->initBlock(0, 3);
     setNextType();
-    if (successful) {
+    return successful;
+    /*if (successful) {
         cout << "successfully created" << endl;
         pushActiveBlocks(b);
 
@@ -65,7 +72,7 @@ bool Level4::newBlock() {
     } else {
         cout << "failed to new" << endl;
         return false;
-    }
+    }*/
 }
 
 void Level4::setNextType() {
@@ -98,6 +105,7 @@ void Level4::setNextType() {
 }
 
 bool Level4::dropStar() {
+    //if (rows_cleared)
     for (int i = 17; i >= 0; --i) {
         Cell *p = getBoard().at(i).at(5).get();
         if (!p->getState()) {  // unoccupied
@@ -122,6 +130,19 @@ void Level4::judge(int row_cleared) {
 }
 
 
+void Level4::curDrop() {
+    component->curDrop();
+    int rows_cleared = component->clear();
+    if (rows_cleared == 0) {
+        countNotCleared += 1;
+    } else {
+        countNotCleared = 0;
+    }
+    if (countNotCleared == 5) {
+        dropStar();
+    }
+
+}
 // 有n行被clear了
 // 那为了看clearedMinimum是否为true, 我们要拿到clear的总行数，如果 > 0, 则true
 

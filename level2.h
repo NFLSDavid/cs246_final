@@ -15,7 +15,8 @@ class Block;
 
 class Level2: public Level {
     public:
-        Level2(abc_board *c);
+        // Level2(abc_board *c);
+        Level2( std::shared_ptr<abc_board> c ); 
         int getLevel() const override;
         bool newBlock() override;
         void setNextType() override;

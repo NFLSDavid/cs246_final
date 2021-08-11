@@ -17,7 +17,7 @@ class Blind: public Level {
     private:
         bool isBlinded;  // the board isBlinded
     public:
-        Blind(abc_board *c);
+        Blind(std::shared_ptr<abc_board> c);
         void unblind();
         int getLevel() const override;
         bool newBlock() override;
