@@ -48,7 +48,7 @@ bool Level4::newBlock() {
     bool successful = b->initBlock(0, 3);
     setNextType();
     return successful;
-    /*if (successful) {
+    if (successful) {
         cout << "successfully created" << endl;
         pushActiveBlocks(b);
 
@@ -72,7 +72,7 @@ bool Level4::newBlock() {
     } else {
         cout << "failed to new" << endl;
         return false;
-    }*/
+    }
 }
 
 void Level4::setNextType() {
@@ -130,7 +130,7 @@ void Level4::judge(int row_cleared) {
 }
 
 
-void Level4::curDrop() {
+/*void Level4::curDrop() {
     component->curDrop();
     int rows_cleared = component->clear();
     if (rows_cleared == 0) {
@@ -142,7 +142,7 @@ void Level4::curDrop() {
         dropStar();
     }
 
-}
+}*/
 // 有n行被clear了
 // 那为了看clearedMinimum是否为true, 我们要拿到clear的总行数，如果 > 0, 则true
 

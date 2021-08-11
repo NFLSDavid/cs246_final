@@ -27,7 +27,7 @@ class Level4: public Level {
         Level4( std::shared_ptr<abc_board> c ); 
         bool newBlock() override;
         void setNextType() override;
-        void curDrop() override;
+        //void curDrop() override;
         int countNotCleared = 0;  //如果%5 = 0 且不等于0, 就drop (在每次drop函数的时候check并unpdate)
         bool dropStar(); // if dropped successfully, return true
         void judge(int rowsCleared) override;
