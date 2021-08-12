@@ -37,10 +37,25 @@ void printDivider() {
     cout << endl;
 }
 
-void printGameBoard(abc_board* b1, abc_board* b2) {
-    b1->printLevelLine();
+
+// 在printGameBoard里fill背景
+void printGameBoard(Xwindow *w, abc_board* b1, abc_board* b2, int player) {
+    //w->fillRectangle(0, 416, 242, 416, Xwindow::Black);
+    
+    if (w != nullptr) {
+        w->fillRectangle(0, 30, 242, 470, Xwindow::Black);
+        w->fillRectangle(256, 30, 242, 470, Xwindow::Black);
+        b1->printBoard(w, 0);
+        b2->printBoard(w, 1);
+        w->fillRectangle(0, 20, 242, 10, Xwindow::White);
+        w->fillRectangle(256, 20, 242, 10, Xwindow::White);
+        w->fillRectangle(0,416,500,10, Xwindow::White);
+        // 所有draw commands 都放在这里
+    }
+
+    b1->printLevelLine(w, 100, 10, 0);
     printRiver();
-    b2->printLevelLine();
+    b2->printLevelLine(w, 256 + 100, 10, 1);
     cout << endl;
 
     //cout << __LINE__ << std::endl; 
@@ -52,12 +67,13 @@ void printGameBoard(abc_board* b1, abc_board* b2) {
         obj->printScoreLine();
     }*/
 
-    b1->printScoreLine();
+    b1->printScoreLine(w, 100, 20, 0);
     //cout << __LINE__ << std::endl; 
     printRiver();
-    b2->printScoreLine();
+    b2->printScoreLine(w, 256 + 100, 20, 1);
     cout << endl;
     printDivider();
+    
 
     // so far so good
 
@@ -65,16 +81,17 @@ void printGameBoard(abc_board* b1, abc_board* b2) {
     for (int i = 0; i < 18; i++) {
         for (int j = 0; j < 2; j++) {
             if (j == 0) {
-                b1->printRows(i);
+                b1->printRows(i, w, player);
                 printRiver();
             } else {
-                b2->printRows(i);
+                b2->printRows(i, w, player);
                 cout << endl;
             }
         }
     }
 
     printDivider();
+    // divider还没draw
     cout << "Next:" << "      ";
     printRiver();
     cout << "Next:" << "      " << endl;
@@ -82,10 +99,10 @@ void printGameBoard(abc_board* b1, abc_board* b2) {
     for (int i = 20; i < 22; i++) {
         for (int j = 0; j < 2; j++) {
             if (j == 0) {
-                b1->printRows(i);
+                b1->printRows(i, w, player);
                 printRiver();
             } else {
-                b2->printRows(i);
+                b2->printRows(i, w, player);
                 cout << endl;
             }
         }
@@ -105,7 +122,7 @@ random sequence every time you run the program. It’s good for testing, but not
 • -startlevel n Starts the game in level n. The game starts in level 0 if this option is not supplied.
 */
 
-bool processArgs(int argc, char** argv, shared_ptr<abc_board>& b1, shared_ptr<abc_board>& b2) {
+bool processArgs(int argc, char** argv, shared_ptr<abc_board>& b1, shared_ptr<abc_board>& b2, Xwindow **w) {
     //int count = 0;
     if (argc > 3) {
         cout << "Invalid Command" << endl;
@@ -115,6 +132,7 @@ bool processArgs(int argc, char** argv, shared_ptr<abc_board>& b1, shared_ptr<ab
     if (argc == 2) {
         std::string curr = argv[1];
         if (curr == "-text") {
+            *w = nullptr;
              // do not show graphical display
         } else {
             cout << "Invalid Command" << endl;
@@ -163,32 +181,6 @@ bool processArgs(int argc, char** argv, shared_ptr<abc_board>& b1, shared_ptr<ab
 }
 
 
-// void changeLevel(bool up, shared_ptr<abc_board>* b) {
-//     if (up) {
-//         if ((*b)->getLevel() == 0) {
-//             //std::cout << __LINE__ << std::endl;
-//             *b = shared_ptr<abc_board>( new Level1( (*b).get() ) );
-//             //*b = make_shared<Level1>((*b).get());  // b.get() abc_board *
-//             //std::cout << __LINE__ << std::endl;
-//         } else if ((*b)->getLevel() == 1) {
-//             *b = make_shared<Level2>((*b).get());
-//         } else if ((*b)->getLevel() == 2) {
-//             (*b) = make_shared<Level3>((*b).get());
-//         } else if ((*b)->getLevel() == 3) {
-//             *b = make_shared<Level4>((*b).get());
-//         }
-//     } else {
-//         if ((*b)->getLevel() == 1) {
-//             *b = make_shared<Level0>((*b).get());
-//         } else if ((*b)->getLevel() == 2) {
-//             *b = make_shared<Level1>((*b).get());
-//         } else if ((*b)->getLevel() == 3) {
-//             *b = make_shared<Level2>((*b).get());
-//         } else if ((*b)->getLevel() == 4) {
-//             *b = make_shared<Level3>((*b).get());
-//         }
-//     }
-// }
 
 // delete this function if not working 
 void changeLevel(bool up, shared_ptr<abc_board>& b) {
@@ -286,61 +278,68 @@ void changeCurrentBlock(shared_ptr<abc_board>* player, string cmd) {
     } 
 }
 
-void drawBoard(Xwindow *w, shared_ptr<abc_board> b1, shared_ptr<abc_board> b2) {
-    /*b1->printLevelLine();
-    printRiver();
-    b2->printLevelLine();
-    cout << endl;
+// void drawBoard(Xwindow *w, shared_ptr<abc_board> b1, shared_ptr<abc_board> b2) {
+//     /*b1->printLevelLine();
+//     printRiver();
+//     b2->printLevelLine();
+//     cout << endl;
 
-    b1->printScoreLine(); 
-    printRiver();
-    b2->printScoreLine();
-    cout << endl;
+//     b1->printScoreLine(); 
+//     printRiver();
+//     b2->printScoreLine();
+//     cout << endl;
 
-    printDivider();*/
+//     printDivider();*/
 
-    // so far so good
+//     // so far so good
 
     
-    for (int i = 0; i < 18; i++) {
-        for (int j = 0; j < 2; j++) {
-            if (j == 0) {
-                b1->printRows(i);
-                printRiver();
-            } else {
-                b2->printRows(i);
-                cout << endl;
-            }
-        }
-    }
+//     for (int i = 0; i < 18; i++) {
+//         for (int j = 0; j < 2; j++) {
+//             if (j == 0) {
+//                 b1->printRows(i);
+//                 printRiver();
+//             } else {
+//                 b2->printRows(i);
+//                 cout << endl;
+//             }
+//         }
+//     }
 
-    printDivider();
-    cout << "Next:" << "      ";
-    printRiver();
-    cout << "Next:" << "      " << endl;
+//     printDivider();
+//     cout << "Next:" << "      ";
+//     printRiver();
+//     cout << "Next:" << "      " << endl;
 
-    for (int i = 20; i < 22; i++) {
-        for (int j = 0; j < 2; j++) {
-            if (j == 0) {
-                b1->printRows(i);
-                printRiver();
-            } else {
-                b2->printRows(i);
-                cout << endl;
-            }
-        }
-    }
-}
+//     for (int i = 20; i < 22; i++) {
+//         for (int j = 0; j < 2; j++) {
+//             if (j == 0) {
+//                 b1->printRows(i);
+//                 printRiver();
+//             } else {
+//                 b2->printRows(i);
+//                 cout << endl;
+//             }
+//         }
+//     }
+// }
 int main(int argc, char* argv[]) {
     
-    Xwindow x;
-    x.drawString(0, 0, "Plyaer1");
+    //Xwindow *w = nullptr;
+    
+   //unique_ptr<Xwindow> w = make_unique<Xwindow>();
+    
+    // // w->fillRectangle(0, 30, 242, 470, Xwindow::Black);
+    // // w->fillRectangle(256, 30, 242, 470, Xwindow::Black);
+    
+    //x.fillRectangle(0,0, 10,10, Xwindow::Blue);
+    //x.drawString(10,10, "Level: ");
     //shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     //istringstream filePlayer1 
     shared_ptr<abc_board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     shared_ptr<abc_board> b2 = make_shared<Board>("biquadris_sequence2.txt");
 
-    if (processArgs(argc, argv, b1, b2) == false) {
+    if (processArgs(argc, argv, b1, b2, nullptr) == false) {
         return 0;
     }
     // abc_board *b1 = new Board{"allO.txt"};
@@ -375,7 +374,8 @@ int main(int argc, char* argv[]) {
                     break;
                 } // have a new block
                 //printGameBoard(b1, b2);
-                printGameBoard(b1.get(), b2.get());
+                //cout << "starting to draw board" << endl;
+                printGameBoard(nullptr, b1.get(), b2.get(), i);
                 
             } else {
                 //player = b2;
@@ -385,7 +385,7 @@ int main(int argc, char* argv[]) {
                     break;
                 }
                 //printGameBoard(b1, b2);
-                printGameBoard(b1.get(), b2.get());
+                printGameBoard(nullptr, b1.get(), b2.get(), i);
             }
             bool restart = false;
             while (true) {
@@ -393,6 +393,7 @@ int main(int argc, char* argv[]) {
                 int steps = 1;
                 try {
                     steps = stoi(cmd) ;
+                    cmd = cmd.substr(1);
                 } catch (exception&) {
                     /* ... */
                 }
@@ -457,7 +458,7 @@ int main(int argc, char* argv[]) {
 
                             // print一下
                             //printGameBoard(b1, b2);
-                            printGameBoard(b1.get(), b2.get());
+                            printGameBoard(nullptr, b1.get(), b2.get(), i);
 
                             
                             if (linesCleared >= 2) {
@@ -506,6 +507,8 @@ int main(int argc, char* argv[]) {
                         string filename;
                         cin >> filename;
                         player->initfs(filename);
+                    } else if (cmd[0] == 'h') {
+                        
                     }
 
                     
@@ -515,7 +518,7 @@ int main(int argc, char* argv[]) {
                         b2 = player;
                     }
                 //printGameBoard(b1, b2);
-                    printGameBoard(b1.get(), b2.get());
+                    printGameBoard(nullptr, b1.get(), b2.get(), i);
                 }
                 if (dropped || restart) {
                     break;
@@ -677,3 +680,31 @@ int main(int argc, char* argv[]) {
 //                 } else {
 //                     b2 = player;
 //                 }
+
+
+// void changeLevel(bool up, shared_ptr<abc_board>* b) {
+//     if (up) {
+//         if ((*b)->getLevel() == 0) {
+//             //std::cout << __LINE__ << std::endl;
+//             *b = shared_ptr<abc_board>( new Level1( (*b).get() ) );
+//             //*b = make_shared<Level1>((*b).get());  // b.get() abc_board *
+//             //std::cout << __LINE__ << std::endl;
+//         } else if ((*b)->getLevel() == 1) {
+//             *b = make_shared<Level2>((*b).get());
+//         } else if ((*b)->getLevel() == 2) {
+//             (*b) = make_shared<Level3>((*b).get());
+//         } else if ((*b)->getLevel() == 3) {
+//             *b = make_shared<Level4>((*b).get());
+//         }
+//     } else {
+//         if ((*b)->getLevel() == 1) {
+//             *b = make_shared<Level0>((*b).get());
+//         } else if ((*b)->getLevel() == 2) {
+//             *b = make_shared<Level1>((*b).get());
+//         } else if ((*b)->getLevel() == 3) {
+//             *b = make_shared<Level2>((*b).get());
+//         } else if ((*b)->getLevel() == 4) {
+//             *b = make_shared<Level3>((*b).get());
+//         }
+//     }
+// }

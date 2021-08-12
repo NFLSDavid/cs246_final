@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include "block.h"
+class Xwindow;
 using namespace std;
 class Cell;
 //class Block;
@@ -57,11 +58,11 @@ class abc_board {
     virtual void curDrop() = 0;
 
     // for testing
-    virtual void printBoard() = 0;
+    virtual void printBoard(Xwindow *w, int player) = 0;
     virtual void printNextBlock(char) = 0;
-    virtual void printLevelLine() = 0;
-    virtual void printScoreLine() = 0;
-    virtual void printRows(int r) = 0;
+    virtual void printLevelLine(Xwindow *w, int lc_x, int lc_y, int player) = 0;
+    virtual void printScoreLine(Xwindow *w, int lc_x, int lc_y, int player) = 0;
+    virtual void printRows(int r, Xwindow *w, int player) = 0;
 };
 
 #endif

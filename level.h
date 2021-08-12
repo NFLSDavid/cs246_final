@@ -53,11 +53,11 @@ class Level: public abc_board {
     void heavyOne();
 
     // for testing
-    void printBoard() override;
+    void printBoard(Xwindow *w, int player) override;
     void printNextBlock(char) override;
-    void printLevelLine() override;
-    void printScoreLine() override;
-    void printRows(int r) override;
+    void printLevelLine(Xwindow *w, int lc_x, int lc_y, int player) override;
+    void printScoreLine(Xwindow *w, int lc_x, int lc_y, int player) override;
+    void printRows(int r, Xwindow *w, int player) override;
 
     protected:
         // Level(abc_board *c);

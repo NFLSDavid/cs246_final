@@ -29,7 +29,7 @@ class Board: public abc_board {
     
     public:
     vector <vector <shared_ptr<Cell>>> cells;
-
+    Xwindow *w;
     Board(string filenname);
     ~Board();
 
@@ -79,11 +79,11 @@ class Board: public abc_board {
     void curDrop() override;
 
     // for testing
-    void printBoard() override;
+    void printBoard(Xwindow *w, int player) override;
     void printNextBlock(char) override;
-    void printLevelLine() override;
-    void printScoreLine() override;
-    void printRows(int r) override;
+    void printLevelLine(Xwindow *w, int lc_x, int lc_y, int player) override;
+    void printScoreLine(Xwindow *w, int lc_x, int lc_y, int player) override;
+    void printRows(int r, Xwindow *w, int player) override;
 };
 
 #endif

@@ -7,7 +7,7 @@ using namespace std;
 #include <vector>
 
 typedef pair<int, int> point;
-
+class Xwindow;
 class abc_board;
 
 class Block {
@@ -36,6 +36,8 @@ class Block {
     void drop();
     bool dropRow(int);
 
+    void drawBlock(Xwindow *w, int player);
+    void undrawBlock(Xwindow *w, int player);
     // getter
     int getLevel();
     // setter
@@ -52,6 +54,8 @@ class Block {
     //void setFalse();        // set False and set type to space
     //void setTrue();
     bool checkValidMove();
+
+    
 };
 
 #endif

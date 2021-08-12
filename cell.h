@@ -26,8 +26,8 @@ class Cell {
     void blind();
     void unblind();
 
-    void draw();
-    void undraw();
+    void draw(Xwindow *w, int player);
+    void undraw(Xwindow *w, int player);
 
     void print();  // print 
     

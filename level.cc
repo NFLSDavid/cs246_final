@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include "window.h"
 using namespace std;
 
 //Level::Level(abc_board *c): component{c} {}
@@ -116,8 +117,8 @@ int Level::clear() {
     return component->clear();
 }
 
-void Level::printBoard() {
-    component->printBoard();
+void Level::printBoard(Xwindow *w, int player) {
+    component->printBoard(w, player);
 }
 
 shared_ptr<Block> Level::produceBlock(char c) {
@@ -171,19 +172,38 @@ void Level::clearNextDisplay() {
     component->clearNextDisplay();
 }
    
-void Level::printLevelLine() {
+void Level::printLevelLine(Xwindow *w, int lc_x, int lc_y, int player) {
+    if (w != nullptr) {
+        std::string s = std::to_string(getLevel());
+        if (player == 0) {
+            w->drawString(254,10, "Level: ");
+        } else {
+            w->drawString(10,10, "Level: ");
+        }
+        
+        w->drawString(lc_x,lc_x, s);
+    }
     cout << "Level:" << setw(5) << getLevel();
 }
 
-void Level::printScoreLine() {
+void Level::printScoreLine(Xwindow *w, int lc_x, int lc_y, int player) {
+    if (w != nullptr) {
+        std::string s = std::to_string(getLevel());
+        if (player == 0) {
+            w->drawString(254,10, "Score: ");
+        } else {
+            w->drawString(10,10, "Score: ");
+        }
+        w->drawString(lc_x,lc_x, s);
+    }
     //std::cout << __LINE__ << std::endl; 
     cout << "Score:" << setw(5) << getCurrentScore();
     //std::cout << __LINE__ << std::endl;
     //component->printScoreLine();
 }
     
-void Level::printRows(int r) {
-    component->printRows(r);
+void Level::printRows(int r, Xwindow *w, int player) {
+    component->printRows(r, w, player);
 }
 
 Level::~Level() {}

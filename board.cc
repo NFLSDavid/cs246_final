@@ -9,7 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-
+#include "window.h"
 using namespace std;
 
 Board::Board(string filename) : filename{filename}, level{0}, currentScore{0} {
@@ -110,7 +110,7 @@ void Board::changeCurrBlock(char type) {
     curr->setFalse();  // currBlock setFalse(disappear)
 
     auto i = produceBlock(type);
-    cout << curr->getLeftCorner()->first << " " << curr->getLeftCorner()->second << endl;
+    //cout << curr->getLeftCorner()->first << " " << curr->getLeftCorner()->second << endl;
     bool initStat = i->initBlock(curr->getLeftCorner()->first, curr->getLeftCorner()->second);
     if (!initStat) {  // if we failed to init this new block
         curr->setTrue();
@@ -137,7 +137,7 @@ shared_ptr<Block> Board::produceBlock(char c) {
     }  else {
         b = make_shared<tblock>(this, getLevel(), c);
     }
-    cout << "Block is generated at Level: " << getLevel() << endl;
+    //cout << "Block is generated at Level: " << getLevel() << endl;
     return b;
 }
 
@@ -326,46 +326,51 @@ int Board::clear() {
 
 void Board::initfs(string filename) {}
 
-void Board::printLevelLine() {
+void Board::printLevelLine(Xwindow *w, int lc_x, int lc_y, int player) {
+    if (w != nullptr) {
+        std::string s = std::to_string(getLevel());
+        cout << s;
+        if (player == 0) {
+            w->drawString(0,10, "Level: ");
+        } else {
+            w->drawString(254,10, "Level: ");
+        }
+        
+        w->drawString(lc_x,lc_x, s);
+    }
+    
     cout << "Level:" << setw(5) << getLevel();
 }
 
-void Board::printScoreLine() {
-
+void Board::printScoreLine(Xwindow *w, int lc_x, int lc_y, int player) {
+    if (w != nullptr) {
+        std::string s = std::to_string(getCurrentScore());
+        if (player == 0) {
+            w->drawString(0,20, "Score: ");
+        } else {
+            w->drawString(256,20, "Score: ");
+        }
+        w->drawString(lc_x,lc_x, s);
+    }
     cout << "Score:" << setw(5) << getCurrentScore();
 
 }
 
-void Board::printRows(int i) {
+void Board::printRows(int i, Xwindow *w, int player) {
     for (int j = 0; j < 11; j++) {
         //cout << cells.at(i).at(j).get()->getType();
+       // cells.at(i).at(j)->draw(w, player);
         cells.at(i).at(j)->print();
-    }
+    }  
 }
 
-void Board::printBoard() {
-    //int rows  = cells.size();
-    //int cols = cells.at(0).size();
-    cout << "Level:" << setw(5) << level << endl;
-    cout << "Score:" << setw(5) << currentScore << endl;
-    for (int i = 0; i < 11; i++) {
-        cout << '_';
-    }
-    cout << endl;
+void Board::printBoard(Xwindow *w, int player) {
+    
+    shared_ptr<Block> block = active_blocks[active_blocks.size()-1];
+    block->drawBlock(w, player);
+    
+    //auto b = produceBlock(nextBlockType);
 
-    for (int i = 0; i < 18; i++) {
-        for (int j = 0; j < 11; j++) {
-            cout << cells.at(i).at(j).get()->getType();
-        }
-        cout << endl;
-    }
-
-    for (int i = 0; i < 11; i++) {
-        cout << '_';
-    }
-    cout << endl;
-    cout << "Next:" << endl;
-
-    printNextBlock('Z'); // not right
-
+    //b->initBlock(0, 21);
+    //b->drawBlock(w, player);
 }

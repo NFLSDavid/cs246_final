@@ -83,23 +83,42 @@ Cell & Cell::operator=(Cell &&other) {
     return *this;
 }
 */
-
-void Cell::draw() {
-    int side_length;
-    int col = x * side_length;
-    int row = y * side_length;
-  /*int each_grid = 500/gridSize;
-  int x = c * each_grid;
-  int y = r * each_grid;
-  
-  w->fillRectangle(x,y,each_grid,each_grid, Xwindow::White);*/
-  
-}
-
 // on->off (black)
-void Cell::undraw() {
+void Cell::undraw(Xwindow *w, int player) {
     int side_length;
     int col = x * side_length;
-    int row = y * side_length;
+    int row = y * side_length + 30;
+    if (player == 1) {
+        col += 254;
+    }
     w->fillRectangle(x,y,side_length,side_length, Xwindow::Black);
 }
+
+void Cell::draw(Xwindow *w, int player) {
+    if (!occupied) {
+        w->fillRectangle(x,y + 30,20, 20, Xwindow::Black);
+    }
+    int side_length = 20;
+    int col = x * side_length;
+    int row = y * side_length + 30;
+    if (player == 1) {
+        col += 254;
+    }
+    if (getType() == 'I') {
+       w->fillRectangle(col, row, side_length, side_length, Xwindow::Red);
+    } else if (getType() == 'O') {
+       w->fillRectangle(col, row, side_length, side_length, Xwindow::Blue);
+    } else if (getType() == 'Z') {
+       w->fillRectangle(col, row, side_length, side_length,Xwindow::Green);
+    } else if (getType() == 'S') {
+       w->fillRectangle(col, row, side_length, side_length,Xwindow::Gold);
+    } else if (getType() == 'L') {
+       w->fillRectangle(col, row, side_length, side_length,Xwindow::Orange);
+    } else if (getType() == 'J') {
+       w->fillRectangle(col, row, side_length, side_length,Xwindow::Purple);
+    } else if (getType() == 'T') {
+       w->fillRectangle(col, row, side_length, side_length,Xwindow::Brown);
+    } 
+}
+
+

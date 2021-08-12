@@ -21,6 +21,21 @@ int Block::getLevel() {
     return level;
 }
 
+void Block::drawBlock(Xwindow *w, int player) {
+    for (int i = 0; i < p_array.size(); i++) {
+        int x = p_array.at(i).first;
+        int y = p_array.at(i).second;
+        this->b->getBoard().at(y).at(x).get()->draw(w, player);
+    }
+}
+
+void Block::undrawBlock(Xwindow *w, int player) {
+    for (int i = 0; i < 4; i++) {
+        int x = p_array.at(i).first;
+        int y = p_array.at(i).second;
+        this->b->getBoard().at(y).at(x).get()->draw(w, player);
+    }
+}
 
 void Block::setFalse() {
     int len = p_array.size();
@@ -183,3 +198,5 @@ bool Block::dropRow(int r) {
     }
     return true;
 }
+
+
