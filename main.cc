@@ -17,6 +17,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <map>
+#include "window.h"
 using namespace std;
 
 
@@ -285,10 +286,55 @@ void changeCurrentBlock(shared_ptr<abc_board>* player, string cmd) {
     } 
 }
 
+void drawBoard(Xwindow *w, shared_ptr<abc_board> b1, shared_ptr<abc_board> b2) {
+    /*b1->printLevelLine();
+    printRiver();
+    b2->printLevelLine();
+    cout << endl;
 
+    b1->printScoreLine(); 
+    printRiver();
+    b2->printScoreLine();
+    cout << endl;
+
+    printDivider();*/
+
+    // so far so good
+
+    
+    for (int i = 0; i < 18; i++) {
+        for (int j = 0; j < 2; j++) {
+            if (j == 0) {
+                b1->printRows(i);
+                printRiver();
+            } else {
+                b2->printRows(i);
+                cout << endl;
+            }
+        }
+    }
+
+    printDivider();
+    cout << "Next:" << "      ";
+    printRiver();
+    cout << "Next:" << "      " << endl;
+
+    for (int i = 20; i < 22; i++) {
+        for (int j = 0; j < 2; j++) {
+            if (j == 0) {
+                b1->printRows(i);
+                printRiver();
+            } else {
+                b2->printRows(i);
+                cout << endl;
+            }
+        }
+    }
+}
 int main(int argc, char* argv[]) {
     
-    
+    Xwindow x;
+    x.drawString(0, 0, "Plyaer1");
     //shared_ptr<Board> b1 = make_shared<Board>("biquadris_sequence1.txt");
     //istringstream filePlayer1 
     shared_ptr<abc_board> b1 = make_shared<Board>("biquadris_sequence1.txt");

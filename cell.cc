@@ -1,5 +1,6 @@
 #include "cell.h"
 #include <iostream>
+#include "window.h"
 using namespace std;
 
 Cell::Cell(int x, int y, char type): x{x}, y{y}, isBlinded(false), occupied{false}, type{type} {}
@@ -53,13 +54,6 @@ void Cell::blind() {
     isBlinded = true;
 }
 
-void Cell::draw() {
-
-}
-
-void Cell::undraw() {
-
-}
 
 void Cell::print() {
     if (!isBlinded) {
@@ -89,3 +83,23 @@ Cell & Cell::operator=(Cell &&other) {
     return *this;
 }
 */
+
+void Cell::draw() {
+    int side_length;
+    int col = x * side_length;
+    int row = y * side_length;
+  /*int each_grid = 500/gridSize;
+  int x = c * each_grid;
+  int y = r * each_grid;
+  
+  w->fillRectangle(x,y,each_grid,each_grid, Xwindow::White);*/
+  
+}
+
+// on->off (black)
+void Cell::undraw() {
+    int side_length;
+    int col = x * side_length;
+    int row = y * side_length;
+    w->fillRectangle(x,y,side_length,side_length, Xwindow::Black);
+}

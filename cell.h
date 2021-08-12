@@ -1,12 +1,13 @@
 #ifndef __CELL_H__
 #define __CELL_H__
+class Xwindow;
 
 class Cell {
     int x, y;   // x, y (0,0)
     bool isBlinded;
     bool occupied;
     char type;
-
+    Xwindow *w;
     public:
     Cell(int x, int y, char type);
     int getX();
